@@ -12,7 +12,8 @@ import Contacto from './Tienda/Contacto/contacto';
 import Categorias from './Tienda/Categorias/categorias';
 import Comprar from './Tienda/Comprar/compras';
 import Ofertas from './Tienda/Ofertas/ofertas';
-import Login from './Tienda/Login/logins';
+import Login from './Tienda/Login/login';
+import Registro from './Tienda/Login/registro';
 
 import NavbarAdmin from './Admin/Navbar/navbarAdmin';
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/Comprar" element={<Comprar />} />
           <Route path="/Ofertas" element={<Ofertas />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/Registro" element={<Registro />} />
         </Route>
 
         {/* ADMIN */}
