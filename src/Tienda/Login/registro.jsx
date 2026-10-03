@@ -17,14 +17,25 @@ function registro() {
             });
             const data = await response.json();
             console.log(data);
+
+            if(response.ok) {
+                alert(data.message || 'Usuario registrado con exito');
+                navigate('/login')
+            }
+            else{
+                alert(data.error || 'Error al registrar el usuario');
+            }
         } catch (error) {
             console.error('Error:', error);
         }
-        navigate('/login');
+        
     };
+
+    {/*boton de la caja de si ya tengo cuenta*/}
     const login = () => {
         navigate('/login');
     }
+    
   return (
     <>
     <div className="contenedor_logo">
@@ -37,12 +48,16 @@ function registro() {
             <form onSubmit={registro}>
                 <input defaultValue="inicio" name="origen" type="hidden" />
                 <h2>Registrarse</h2>
+                
+                <label htmlFor="nombre_completo">Nombre Completo</label>
                 <input
                 maxLength="100"
                 name="nombre_completo"
                 placeholder="Nombre Completo"
                 type="text"
+                required
                 />
+                <label htmlFor="rut">Rut</label>
                 <input
                 maxLength="9"
                 minLength="7"
@@ -50,29 +65,42 @@ function registro() {
                 pattern="\d{7,8}[0-9kK]"
                 placeholder="RUT 12345678K"
                 type="text"
+                required
                 />
+                <label htmlFor="correo">Correo</label>
                 <input
                 maxLength="100"
                 name="correo"
                 pattern=".+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)"
                 placeholder="Correo Electronico"
-                type="text"
+                type="text" 
+                required
                 />
+                <label htmlFor="contrasena">Constraseña</label>
                 <input
                 maxLength="10"
                 minLength="4"
                 name="contrasena"
                 placeholder="Contraseña"
                 type="password"
+                required
                 />
+                <label htmlFor="constrasenaConf">Confirmar Contraseña</label>
                 <input
                 maxLength="10"
                 minLength="4"
                 name="contrasenaConf"
                 placeholder="Confirmar Contraseña"
                 type="password"
+                required
                 />
-                <input name="telefono" placeholder="Telefono" type="text" />
+                <label htmlFor="telefono">Telefono</label>
+                <input 
+                name="telefono" 
+                placeholder="Telefono" 
+                type="text" 
+                required
+                />
                 <div className="region-comuna">
                 <select id="region" name="region">
                     <option value="selecciona">Seleccione la Región</option>
@@ -95,9 +123,13 @@ function registro() {
                     <option value="tarapaca">Tarapacá</option>
                     <option value="valparaiso">Valparaíso</option>
                 </select>
-                <input name="comuna" placeholder="Comuna" type="text" />
+                <input 
+                name="comuna" 
+                placeholder="Comuna" 
+                type="text" required
+                />
                 </div>
-                <button>Registrarse</button>
+                <button type='submit'>Registrarse</button>
             </form>
 
             <div className="caja-login">

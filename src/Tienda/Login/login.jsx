@@ -1,83 +1,142 @@
 import './login.css';
 import Logo from '../../assets/LogoPrueba.png';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [correo, setCorreo] = useState('');
   const [contrasena, setcontrasena] = useState('');
   const [error, setError] = useState('');
+  const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  //verifica si hay un usuario guardado
+  useEffect(() => {
+    const usuarioGuardado = localStorage.getItem('usuario');
+    if (usuarioGuardado) {
+      setUsuario(JSON.parse(usuarioGuardado));
+    }
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(correo === '' || contrasena === '') {
-      setError(true);
+    if (correo === '' || contrasena === '') {
+      setError("Todos los campos son obligatorios");
       return;
     }
-    setError(false);
-    fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ correo, contrasena }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-    })
-    .catch(error => console.error('Error:', error));
-    navigate('/dashboard');
 
-  }
+    setError("");
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ correo, contrasena }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.ok) {
+        localStorage.setItem('usuario', JSON.stringify(data.usuario));
+        setUsuario(data.usuario);
+      } else {
+        setError(data.error || 'Credenciales invalidas');
+      }
+    } catch (err) {
+      console.error("Error", err);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('usuario');
+    setUsuario(null);
+    setCorreo('');
+    setcontrasena('');
+  };
 
   const registro = () => {
     navigate('/registro');
-  }
+  };
 
   return (
     <>
-    <div className="contenedor_logo">
-      <img src={Logo} alt="logo" />
-      <h1>Nombre</h1>
-    </div>
-
-    <div className="contenedor">
-      <div className="contenedor_login">
-        <form onSubmit={handleSubmit}>
-          <h2>Iniciar Sesion</h2>
-          <input
-            maxLength="100"
-            name="correo"
-            pattern=".+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)"
-            placeholder="Correo Electronico"
-            type="text"
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
-          />
-          <input
-            maxLength="10"
-            minLength="4"
-            name="contrasena"
-            placeholder="Contraseña"
-            type="password"
-            value={contrasena}
-            onChange={(e) => setcontrasena(e.target.value)}
-          />
-          <button>Iniciar Sesion</button>
-        </form>
-
-        
-        
-        <div className="caja-registro">
-          {error && <p className="error">Todos los campos son obligatorios</p>}
-          <h4>¿Aun no tienes cuenta?</h4>
-          <p>Registrate para iniciar sesion</p>
-          <button type="button" onClick={registro}>Registrarse</button>
-        </div>
-        
+      <div className="contenedor_logo">
+        <img src={Logo} alt="logo" />
+        <h1>Nombre</h1>
       </div>
-    </div>
+
+      <div className="contenedor">
+        {usuario ? (
+          /*vista del usuario cuando ya inicio sesion*/
+          <div className="tarjeta_cuenta">
+            <h2>Mi Cuenta</h2>
+
+            <div className="perfil_banner">
+              <div className="perfil_info">
+                <span>Bienvenido/a</span>
+                <h3>{(usuario.correo).toUpperCase()}</h3>
+              </div>
+            </div>
+
+            {/* Si es admin, tiene un boton para ir al dashboard */}
+            {usuario.rol === 'admin' && (
+              <button
+                type="button"
+                className="btn_admin"
+                onClick={() => navigate('/dashboard')}
+              >
+                Ir a Administración
+              </button>
+            )}
+
+            <button
+              type="button"
+              className="btn_logout"
+              onClick={logout}
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+        ) : (
+          /* Formulario de inicio de sesión */
+          <div className="contenedor_login">
+            <form onSubmit={handleSubmit}>
+              <h2>Iniciar Sesión</h2>
+              <label htmlFor="correo">Correo</label>
+              <input
+                maxLength="100"
+                name="correo"
+                id="correo"
+                pattern=".+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)"
+                placeholder="Correo Electrónico"
+                type="email"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+              />
+              <label htmlFor="contrasena">Contraseña</label>
+              <input
+                maxLength="10"
+                minLength="4"
+                name="contrasena"
+                id="contrasena"
+                placeholder="Contraseña"
+                type="password"
+                value={contrasena}
+                onChange={(e) => setcontrasena(e.target.value)}
+              />
+              <button type="submit">Iniciar Sesion</button>
+            </form>
+
+            <div className="caja-registro">
+              {error && <p className="error">{error}</p>}
+              <h4>¿Aún no tienes cuenta?</h4>
+              <p>Registrate para iniciar sesion</p>
+              <button type="button" onClick={registro}>Registrarse</button>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

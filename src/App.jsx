@@ -23,6 +23,7 @@ import ProductosAdmin from './Admin/Producto/productosA';
 import CategoriasAdmin from './Admin/Categoria/categoriaA';
 import Dashboard from './Admin/Dashboard/dashboard';
 import Reporte from './Admin/Reportes/reportes';
+import EditarUsuario from './Admin/Usuarios/editarUsuario';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
         <Route element={<NavbarAdmin />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/usuarios" element={<Usuarios />} />
+          <Route path="/editarUsuario/:id" element={<EditarUsuario />} />
           <Route path="/productosA" element={<ProductosAdmin />} />
           <Route path="/categoriaA" element={<CategoriasAdmin />} />
           <Route path="/reportes" element={<Reporte />} />

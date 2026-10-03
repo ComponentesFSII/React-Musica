@@ -25,7 +25,7 @@
 .contenedor_registro form{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     padding: 20px;
     border-radius: 20px;
@@ -33,6 +33,7 @@
     margin: auto;
     width: 100%;
     max-width: 450px;
+    box-sizing: border-box;
 }
 
 .contenedor_login form h2,
@@ -43,15 +44,33 @@
     color: #033363;
 }
 
+.contenedor_login form label,
+.contenedor_registro form label {
+    display: block;
+    color: #033363;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+/* El primer label dentro del form no necesita margen superior */
+.contenedor_login form label:first-of-type,
+.contenedor_registro form label:first-of-type {
+    margin-top: 0px;
+}
+
 .contenedor_login form input,
 .contenedor_registro form input{
     width: 100%;
-    margin-top: 20px;
     padding: 10px;
-    border: none;
+    border: 1px solid #ccc;
     background: #f2f2f2;
     font-size: 16px;
     outline: none;
+    box-sizing: border-box;
+    border-radius: 4px;
 }
 
 .contenedor_login form button,
@@ -109,11 +128,96 @@
 
 .region-comuna select,
 .region-comuna input {
-    margin-top: 20px;
+    margin-top: 15px;
     outline: none;
     background: #f2f2f2;
-    border: none;
-    padding: 5px;
+    border: 1px solid #ccc;
+    padding: 8px;
     font-size: 16px;
-    width: 130%;
+    width: 100%;
+    flex: 1;
+}
+
+/* usuarios logueados*/
+.tarjeta_cuenta {
+    background-color: white;
+    border-radius: 20px;
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    margin: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.tarjeta_cuenta h2 {
+    font-size: 28px;
+    color: #033363;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.perfil_banner {
+    background-color: rgba(146, 214, 211, 0.5);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+
+.perfil_info {
+    text-align: left;
+}
+
+.perfil_info span {
+    font-size: 13px;
+    color: #555;
+    display: block;
+}
+
+.perfil_info h3 {
+    margin: 2px 0 0 0;
+    font-size: 16px;
+    color: #033363;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.btn_admin {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    background: #033363;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn_admin:hover {
+    background: rgb(8, 159, 185);
+}
+
+.btn_logout {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    background: #cb1313;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn_logout:hover {
+    background: #a80f0f;
 }
