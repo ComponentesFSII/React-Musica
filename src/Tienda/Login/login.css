@@ -19,6 +19,7 @@
     position: relative;
     margin: auto;
     background-color: rgba(146, 214, 211, 0.979);
+    border-radius: 20px;
 }
 
 .contenedor_login form,

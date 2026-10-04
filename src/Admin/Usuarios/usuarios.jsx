@@ -51,8 +51,8 @@ function Usuarios() {
     <div className="container text-center">
       <h1>Tabla de Usuarios</h1>
 
-      <table className="table table-bordered border-primary tabla_gris">
-        <thead>
+      <table className="table table-bordered border-primary">
+        <thead className="table-dark text-center">
           <tr>
             <th scope="col">Run</th>
             <th scope="col">Nombre Completo</th>
@@ -75,7 +75,13 @@ function Usuarios() {
               <td>{u.comuna}</td>
               <td>{u.rol}</td>
               <td>
-                <div className="d-grid gap-2 d-md-block">
+                {/*botones */}
+                <div className="d-grid gap-3 d-md-block">
+                  <Link
+                    className="btn btn-success btn-sm me-2"
+                    to={`/historialCompra/${u.id}`}>
+                    Historial
+                  </Link>
                   <Link
                     className="btn btn-primary btn-sm me-2"
                     to={`/editarUsuario/${u.id}`}>

@@ -46,7 +46,6 @@ function registro() {
     <div className="contenedor">
         <div className="contenedor_registro">
             <form onSubmit={registro}>
-                <input defaultValue="inicio" name="origen" type="hidden" />
                 <h2>Registrarse</h2>
                 
                 <label htmlFor="nombre_completo">Nombre Completo</label>

@@ -19,19 +19,22 @@ import NavbarAdmin from './Admin/Navbar/navbarAdmin';
 
 import Perfil from './Admin/Perfil/perfil';
 import Usuarios from './Admin/Usuarios/usuarios';
+import EditarUsuario from './Admin/Usuarios/editarUsuario';
+import HistorialCompra from './Admin/Usuarios/historialCompra';
 import ProductosAdmin from './Admin/Producto/productosA';
 import CategoriasAdmin from './Admin/Categoria/categoriaA';
 import Dashboard from './Admin/Dashboard/dashboard';
 import Reporte from './Admin/Reportes/reportes';
-import EditarUsuario from './Admin/Usuarios/editarUsuario';
 
+import Footer from './Tienda/Footer/footer';
+import FooterA from './Admin/Footer/footerA';
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
         {/* TIENDA */}
-        <Route element={<NavigationBar />}>
+        <Route element={<><NavigationBar /><Footer /></>}>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/Productos" element={<Productos />} />
@@ -46,10 +49,11 @@ function App() {
         </Route>
 
         {/* ADMIN */}
-        <Route element={<NavbarAdmin />}>
+        <Route element={<><NavbarAdmin /><Footer /></>}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/editarUsuario/:id" element={<EditarUsuario />} />
+          <Route path="/historialCompra/:id" element={<HistorialCompra />} />
           <Route path="/productosA" element={<ProductosAdmin />} />
           <Route path="/categoriaA" element={<CategoriasAdmin />} />
           <Route path="/reportes" element={<Reporte />} />
@@ -57,7 +61,11 @@ function App() {
         </Route>
 
       </Routes>
+
+      
     </BrowserRouter>
+
+    
   );
 }
 export default App;
