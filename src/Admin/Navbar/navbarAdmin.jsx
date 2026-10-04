@@ -29,6 +29,7 @@ function NavbarAdmin() {
           </Navbar>
           <Nav className="flex-column">
             <Nav.Link as={Link} to="/dashboard" className="text-white">Dashboard</Nav.Link>
+            <Nav.Link as={Link} to="/ordenes" className="text-white">Ordenes</Nav.Link>
             <Nav.Link as={Link} to="/usuarios" className="text-white">Usuarios</Nav.Link>
             <Nav.Link as={Link} to="/productosA" className="text-white">Productos</Nav.Link>
             <Nav.Link as={Link} to="/categoriaA" className="text-white">Categorias</Nav.Link>

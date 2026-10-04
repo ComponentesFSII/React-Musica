@@ -22,3 +22,9 @@ npm install better-sqlite3
 ```
 npm run dev
 ```
+
+## Iconos
+```
+npm install react-icons
+```
+- https://react-icons.github.io/react-icons/icons/bs/

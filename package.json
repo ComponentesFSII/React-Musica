@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently --kill-others \"vite\" \"python3 server/app.py\"",
+    "dev": "concurrently --kill-others \"vite\" \"python3 server/main.py\"",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
@@ -16,6 +16,7 @@
     "react": "^19.2.8",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.8",
+    "react-icons": "^5.7.0",
     "react-router": "^8.4.0",
     "react-router-dom": "^7.18.4"
   },

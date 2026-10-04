@@ -25,9 +25,10 @@ import ProductosAdmin from './Admin/Producto/productosA';
 import CategoriasAdmin from './Admin/Categoria/categoriaA';
 import Dashboard from './Admin/Dashboard/dashboard';
 import Reporte from './Admin/Reportes/reportes';
+import Ordenes from './Admin/Ordenes/ordenes';
 
 import Footer from './Tienda/Footer/footer';
-import FooterA from './Admin/Footer/footerA';
+
 function App() {
   return (
     <BrowserRouter>
@@ -58,6 +59,7 @@ function App() {
           <Route path="/categoriaA" element={<CategoriasAdmin />} />
           <Route path="/reportes" element={<Reporte />} />
           <Route path="/perfil" element={<Perfil />} />
+          <Route path="/ordenes" element={<Ordenes/>} />
         </Route>
 
       </Routes>
