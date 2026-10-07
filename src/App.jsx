@@ -1,9 +1,11 @@
 import React from 'react';
-import {
-  BrowserRouter,Routes,Route,Navigate,useLocation} from 'react-router-dom';
+import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
 
+import ProtectedRoute from './ProtectedRoute';
+
+//rutas de la tienda
 import NavigationBar from './Tienda/Navbar/navbar';
-
+import Footer from './Tienda/Footer/footer';
 import Home from './Tienda/Home/home';
 import Productos from './Tienda/Productos/producto';
 import Nosotros from './Tienda/Nosotros/nosotros';
@@ -15,9 +17,10 @@ import Ofertas from './Tienda/Ofertas/ofertas';
 import Login from './Tienda/Login/login';
 import Registro from './Tienda/Login/registro';
 
+//rutas de administracion
 import NavbarAdmin from './Admin/Navbar/navbarAdmin';
-
 import Perfil from './Admin/Perfil/perfil';
+import CambiarPsswd from './Admin/Perfil/cambiarPsswd';
 import Usuarios from './Admin/Usuarios/usuarios';
 import EditarUsuario from './Admin/Usuarios/editarUsuario';
 import HistorialCompra from './Admin/Usuarios/historialCompra';
@@ -26,8 +29,6 @@ import CategoriasAdmin from './Admin/Categoria/categoriaA';
 import Dashboard from './Admin/Dashboard/dashboard';
 import Reporte from './Admin/Reportes/reportes';
 import Ordenes from './Admin/Ordenes/ordenes';
-
-import Footer from './Tienda/Footer/footer';
 
 function App() {
   return (
@@ -49,22 +50,23 @@ function App() {
           <Route path="/Registro" element={<Registro />} />
         </Route>
 
-        {/* ADMIN */}
-        <Route element={<><NavbarAdmin /><Footer /></>}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/usuarios" element={<Usuarios />} />
-          <Route path="/editarUsuario/:id" element={<EditarUsuario />} />
-          <Route path="/historialCompra/:id" element={<HistorialCompra />} />
-          <Route path="/productosA" element={<ProductosAdmin />} />
-          <Route path="/categoriaA" element={<CategoriasAdmin />} />
-          <Route path="/reportes" element={<Reporte />} />
-          <Route path="/perfil" element={<Perfil />} />
-          <Route path="/ordenes" element={<Ordenes/>} />
+        {/* ADMIN solo usuario con el rol = admin*/}
+        <Route element={<ProtectedRoute allowedRole="admin" />}>
+          <Route element={<><NavbarAdmin /><Footer /></>}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/usuarios" element={<Usuarios />} />
+            <Route path="/editarUsuario/:id" element={<EditarUsuario />} />
+            <Route path="/historialCompra/:id" element={<HistorialCompra />} />
+            <Route path="/productosA" element={<ProductosAdmin />} />
+            <Route path="/categoriaA" element={<CategoriasAdmin />} />
+            <Route path="/reportes" element={<Reporte />} />
+            <Route path="/perfil" element={<Perfil />} />
+            <Route path="/cambiarPsswd/:id" element={<CambiarPsswd />} />
+            <Route path="/ordenes" element={<Ordenes/>} />
+          </Route>
         </Route>
 
       </Routes>
-
-      
     </BrowserRouter>
 
     

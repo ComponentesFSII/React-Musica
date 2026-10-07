@@ -1,0 +1,105 @@
+.contenedor {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px 20px;
+    padding-top: 40px;
+    position: relative;
+    margin: auto;
+}
+
+.contenedor_cambioPsswd{
+    width: 100%;
+    padding: 40px;
+    position: relative;
+    margin: auto;
+    background-color: rgba(146, 214, 211, 0.979);
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.contenedor_cambioPsswd form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    padding: 30px 25px;
+    border-radius: 20px;
+    background: white;
+    margin: auto;
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.contenedor_cambioPsswd form h2 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #033363;
+}
+
+.contenedor_cambioPsswd form label {
+    display: block;
+    color: #033363;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.contenedor_cambioPsswd form input{
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dcdcdc;
+    background: #f4f4f4;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+    border-radius: 6px;
+    color: #333;
+}
+
+
+/* Agrupamiento para los botones de acción */
+.acciones-botones {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.btn-guardar,
+.btn-cancelar {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-guardar {
+    background: #033363;
+    color: white;
+}
+
+.btn-guardar:hover {
+    background: rgb(8, 159, 185);
+}
+
+.btn-cancelar {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-cancelar:hover {
+    background: #f78c00;
+}

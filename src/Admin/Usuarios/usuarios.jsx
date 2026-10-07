@@ -122,10 +122,10 @@ function Usuarios() {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setUsuarioAEliminar(null)}>
+          <Button variant="danger" onClick={() => setUsuarioAEliminar(null)}>
             Cancelar
           </Button>
-          <Button variant="danger" onClick={eliminarUsuario}>
+          <Button variant="primary" onClick={eliminarUsuario}>
             Aceptar
           </Button>
         </Modal.Footer>

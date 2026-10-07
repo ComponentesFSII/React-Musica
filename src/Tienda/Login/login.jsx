@@ -40,11 +40,20 @@ function Login() {
       if (response.ok && data.ok) {
         localStorage.setItem('usuario', JSON.stringify(data.usuario));
         setUsuario(data.usuario);
-      } else {
+
+        if (data.usuario.rol === 'admin') {
+          navigate('/dashboard');
+        } 
+        else {
+          navigate('/home');
+        }
+      } 
+      else {
         setError(data.error || 'Credenciales invalidas');
       }
-    } catch (err) {
-      console.error("Error", err);
+    } 
+    catch (err) {
+      setError("Error");
     }
   };
 

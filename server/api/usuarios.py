@@ -199,3 +199,23 @@ def actualizar_usuario(id):
 def contarUsuarios():
     row = db.execute('SELECT COUNT(*) as total FROM usuarios').fetchone()
     return jsonify({'ok': True, 'total': row['total']})
+
+
+# cambiar contraseña de usuario
+@app.put('/api/usuarios/<int:id>/cambiar-clave')
+def cambiar_contrasena(id):
+    body = request.get_json() or {}
+    actual = body.get('contrasenaActual')
+    nueva = body.get('contrasenaNueva')
+
+    if not actual or not nueva:
+        return jsonify({'ok': False, 'error': 'Ambos campos son obligatorios'}), 400
+
+    row = db.execute('SELECT contrasena FROM usuarios WHERE id = ?', (id,)).fetchone()
+    if not row or row['contrasena'] != actual:
+        return jsonify({'ok': False, 'error': 'La contraseña actual es incorrecta'}), 400
+
+    db.execute('UPDATE usuarios SET contrasena = ? WHERE id = ?', (nueva, id))
+    db.commit()
+
+    return jsonify({'ok': True, 'mensaje': 'Contraseña actualizada con exito'})

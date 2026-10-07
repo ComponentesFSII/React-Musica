@@ -1,45 +1,30 @@
-/* site-footer.css */
-
-.site-footer {
-  background-color: #1f2937; /* Gris oscuro */
-  color: #f3f4f6; /* Texto claro */
-  padding: 1.5rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 0.875rem;
+.footer_contenedor{
+  background-color: #000000;
+  color: #ffffff;
+  margin: auto;
+  padding: 20px;
 }
 
-.site-footer p {
-  margin: 0;
-  color: #9ca3af; /* Gris secundario para el texto de copyright */
+/* Marca / Logo */
+.footer_letras {
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
-.footer-links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 1.5rem;
+.footer_logo {
+  object-fit: contain;
+  width: 80px;
+  height: 80px;
 }
 
-.footer-links a {
-  color: #f3f4f6;
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
+.footer_link {
+  color: #ffffff;
+  transition: color 0.3s ease, opacity 0.3s ease;
 }
 
-.footer-links a:hover {
-  color: #60a5fa; /* Azul claro al pasar el cursor */
-  text-decoration: underline;
-}
-
-/* Diseño adaptable para pantallas más anchas (móviles horizontales, tablets o desktop) */
-@media (min-width: 640px) {
-  .site-footer {
-    flex-direction: row;
-  }
+.footer_link:hover,
+.footer_link:focus {
+  color: #aca7a7;
+  opacity: 0.8;
 }

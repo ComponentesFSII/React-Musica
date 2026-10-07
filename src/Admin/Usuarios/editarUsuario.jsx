@@ -157,7 +157,7 @@ function EditarUsuario() {
             <button type="submit" className="btn-guardar">
               Actualizar
             </button>
-            <Link to="/usuarios" className="btn-cancelar">
+            <Link to="/dashboard" className="btn-cancelar">
               Cancelar
             </Link>
           </div>

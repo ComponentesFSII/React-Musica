@@ -1,14 +1,59 @@
 import React from 'react';
-import './footer.css'; // Importa aquí tu archivo de estilos
+import { Link } from 'react-router-dom';
+import Logo from '../../assets/LogoPrueba.png';
+import './footer.css';
 
 function Footer() {
   return (
-    <footer className="site-footer">
-      <p>© 2026 Mi Empresa. Todos los derechos reservados.</p>
-      <ul className="footer-links">
-        <li><a href="#privacy">Privacidad</a></li>
-        <li><a href="#terms">Términos</a></li>
-      </ul>
+    <footer className="footer_contenedor text-center">
+      <div className="container">
+        <h4 className="footer_letras">
+          <img alt="logo" src={Logo} className='footer_logo'/>
+          Nombre
+        </h4>
+
+        <ul className="list-inline mb-4">
+          <li className="list-inline-item mx-3">
+            <Link className="footer_link text-decoration-none" to="/home">
+              Home
+            </Link>
+          </li>
+          <li className="list-inline-item mx-3">
+            <Link className="footer_link text-decoration-none" to="/productos">
+              Productos
+            </Link>
+          </li>
+          <li className="list-inline-item mx-3">
+            <Link className="footer_link text-decoration-none" to="/ofertas">
+              Ofertas
+            </Link>
+          </li>
+          <li className="list-inline-item mx-3">
+            <Link className="footer_link text-decoration-none" to="/nosotros">
+              Nosotros
+            </Link>
+          </li>
+          <li className="list-inline-item mx-3">
+            <Link className="footer_link text-decoration-none" to="/blog">
+              Blog
+            </Link>
+          </li>
+          <li className="list-inline-item mx-3">
+            <Link className="footer_link text-decoration-none" to="/contacto">
+              Contacto
+            </Link>
+          </li>
+          <li className="list-inline-item mx-3">
+            <Link className="footer_link text-decoration-none" to="/dashboard">
+              Admin
+            </Link>
+          </li>
+        </ul>
+
+        <span className="small">
+          © 2026 Nombre. Todos los derechos reservados.
+        </span>
+      </div>
     </footer>
   );
 }
