@@ -1,5 +1,5 @@
 import './login.css';
-import Logo from '../../assets/LogoPrueba.png';
+import Logo from '../../assets/logo.png';
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -69,84 +69,83 @@ function Login() {
   };
 
   return (
-    <>
+    <main className="contenedor">
       <div className="contenedor_logo">
         <img src={Logo} alt="logo" />
-        <h1>Nombre</h1>
+        <h1>Off Beat</h1>
       </div>
 
-      <div className="contenedor">
-        {usuario ? (
-          /*vista del usuario cuando ya inicio sesion*/
-          <div className="tarjeta_cuenta">
-            <h2>Mi Cuenta</h2>
+    
+      {usuario ? (
+        /*vista del usuario cuando ya inicio sesion*/
+        <div className="tarjeta_cuenta">
+          <h2>Mi Cuenta</h2>
 
-            <div className="perfil_banner">
-              <div className="perfil_info">
-                <span>Bienvenido/a</span>
-                <h3>{(usuario.correo).toUpperCase()}</h3>
-              </div>
+          <div className="perfil_banner">
+            <div className="perfil_info">
+              <span>Bienvenido/a</span>
+              <h3>{(usuario.correo).toUpperCase()}</h3>
             </div>
+          </div>
 
-            {/* Si es admin, tiene un boton para ir al dashboard */}
-            {usuario.rol === 'admin' && (
-              <button
-                type="button"
-                className="btn_admin"
-                onClick={() => navigate('/dashboard')}
-              >
-                Ir a Administración
-              </button>
-            )}
-
+          {/* Si es admin, tiene un boton para ir al dashboard */}
+          {usuario.rol === 'admin' && (
             <button
               type="button"
-              className="btn_logout"
-              onClick={logout}
+              className="btn_admin"
+              onClick={() => navigate('/dashboard')}
             >
-              Cerrar Sesión
+              Ir a Administración
             </button>
-          </div>
-        ) : (
-          /* Formulario de inicio de sesión */
-          <div className="contenedor_login">
-            <form onSubmit={handleSubmit}>
-              <h2>Iniciar Sesión</h2>
-              <label htmlFor="correo">Correo</label>
-              <input
-                maxLength="100"
-                name="correo"
-                id="correo"
-                pattern=".+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)"
-                placeholder="Correo Electrónico"
-                type="email"
-                value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
-              />
-              <label htmlFor="contrasena">Contraseña</label>
-              <input
-                maxLength="10"
-                minLength="4"
-                name="contrasena"
-                id="contrasena"
-                placeholder="Contraseña"
-                type="password"
-                value={contrasena}
-                onChange={(e) => setcontrasena(e.target.value)}
-              />
-              <button type="submit">Iniciar Sesion</button>
-            </form>
+          )}
 
-            <div className="caja-registro">
-              {error && <p className="error">{error}</p>}
-              <h4>¿Aún no tienes cuenta?</h4>
-              <p>Registrate para iniciar sesion</p>
-              <button type="button" onClick={registro}>Registrarse</button>
-            </div>
+          <button
+            type="button"
+            className="btn_logout"
+            onClick={logout}
+          >
+            Cerrar Sesión
+          </button>
+        </div>
+      ) : (
+        /* Formulario de inicio de sesión */
+        <div className="contenedor_login">
+          <form onSubmit={handleSubmit}>
+            <h2>Iniciar Sesión</h2>
+            <label htmlFor="correo">Correo</label>
+            <input
+              maxLength="100"
+              name="correo"
+              id="correo"
+              pattern=".+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)"
+              placeholder="Correo Electrónico"
+              type="email"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+            />
+            <label htmlFor="contrasena">Contraseña</label>
+            <input
+              maxLength="10"
+              minLength="4"
+              name="contrasena"
+              id="contrasena"
+              placeholder="Contraseña"
+              type="password"
+              value={contrasena}
+              onChange={(e) => setcontrasena(e.target.value)}
+            />
+            <button type="submit">Iniciar Sesion</button>
+          </form>
+
+          <div className="caja-registro">
+            {error && <p className="error">{error}</p>}
+            <h4>¿Aún no tienes cuenta?</h4>
+            <p>Registrate para iniciar sesion</p>
+            <button type="button" onClick={registro}>Registrarse</button>
           </div>
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </main>
   );
 }
 

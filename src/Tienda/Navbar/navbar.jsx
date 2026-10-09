@@ -1,41 +1,46 @@
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { Link,Outlet } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
+import { Link, Outlet } from 'react-router-dom';
+import { BsCart2, BsPersonCircle  } from "react-icons/bs";
+import Logo from '../../assets/logo.png';
+import './navbar.css';
 
 function NavigationBar() {
   return (
     <>
-    <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark">
-        <Navbar.Brand as={Link} to="/home" className="ms-4">React-Bootstrap</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto ">
-            <Nav.Link as={Link} to="/home">Home</Nav.Link>
-            <Nav.Link as={Link} to="/Productos">Productos</Nav.Link>
-            <Nav.Link as={Link} to="/Ofertas">Ofertas</Nav.Link>
-            <Nav.Link as={Link} to="/Nosotros">Nosotros</Nav.Link>
-            <Nav.Link as={Link} to="/Blog">Blog</Nav.Link>
-            <Nav.Link as={Link} to="/Contacto">Contacto</Nav.Link>
-            
-            
-            <div style={{borderLeft: '1px solid #ccc',height: '40px',margin: '0 10px'}}className="d-none d-lg-block"/>
-            <Button 
-              as={Link} 
-              to="/home" 
-              variant="primary" 
-              className='ms-lg-4'>
-              Carrito
-            </Button>
+      <nav className="navbar">
 
-          </Nav>
-          <Nav className="ms-auto me-4">
-            <Nav.Link as={Link} to="/Login">Login</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-    </Navbar>
-    <Outlet/>
+        <div className="navbar-left">
+          <Link to="/" className="navbar-logo">
+            <img src={Logo} alt="Offbeat" />
+          </Link>
 
+          <div className="navbar-links">
+            <Link to="/home">Home</Link>
+            <Link to="/producto">Productos</Link>
+            <Link to="/ofertas">Ofertas</Link>
+            <Link to="/nosotros">Nosotros</Link>
+            <Link to="/blogs">Blog</Link>
+            <Link to="/contacto">Contacto</Link>
+          </div>
+        </div>
+
+        <div className="navbar-actions">
+          <Link
+            to="/login"
+            className="user-button"
+            aria-label="Iniciar sesión"
+            title="Iniciar sesión"
+          >
+            <BsPersonCircle size={21}/>
+          </Link>
+
+          <button className="cart-button" type="button">
+            <BsCart2 size={19}/>
+            <span>Carrito</span>
+          </button>
+        </div>
+
+      </nav>
+      <Outlet />  
     </>
   );
 }

@@ -55,7 +55,8 @@ function Usuarios() {
         <thead className="table-dark text-center">
           <tr>
             <th scope="col">Run</th>
-            <th scope="col">Nombre Completo</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
             <th scope="col">Correo</th>
             <th scope="col">Telefono</th>
             <th scope="col">Region</th>
@@ -68,7 +69,8 @@ function Usuarios() {
           {usuarios.map((u) => (
             <tr key={u.id}>
               <td>{u.rut}</td>
-              <td>{u.nombre_completo}</td>
+              <td>{u.nombre}</td>
+              <td>{u.apellido}</td>
               <td>{u.correo}</td>
               <td>{u.telefono}</td>
               <td>{u.region}</td>

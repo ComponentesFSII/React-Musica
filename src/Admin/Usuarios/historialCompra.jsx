@@ -1,45 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
 
-// Datos de compras simulados
-const comprasFicticias = [
-  {
-    id: 101,
-    fecha: "2024-03-15",
-    estado: "Completado",
-    total: 45990,
-    items: [
-      { nombre: "Audífonos Bluetooth", cantidad: 1, precio: 29990 },
-      { nombre: "Cargador Carga Rápida", cantidad: 1, precio: 16000 }
-    ]
-  },
-  {
-    id: 102,
-    fecha: "2024-03-28",
-    estado: "Pendiente",
-    total: 12990,
-    items: [
-      { nombre: "Funda para Smartphone", cantidad: 1, precio: 12990 }
-    ]
-  },
-  {
-    id: 103,
-    fecha: "2024-04-02",
-    estado: "Cancelado",
-    total: 89990,
-    items: [
-      { nombre: "Teclado Mecánico RGB", cantidad: 1, precio: 89990 }
-    ]
-  }
-];
 
 function HistorialCompra() {
   const { id } = useParams();
   const [compras, setCompras] = useState([]);
   const [usuario, setUsuario] = useState(null);
-  const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -54,83 +22,78 @@ function HistorialCompra() {
           setUsuario(dataUsuario.usuario || dataUsuario);
         }
 
-        setCompras(comprasFicticias);
+        const responseCompras = await fetch(`/api/compras/usuario/${id}`);
+        const dataCompras = await responseCompras.json();
 
+        if (dataCompras.ok) {
+          setCompras(dataCompras.compras);
+        } else {
+          setError("No se pudieron obtener las compras del usuario.");
+        }
       } catch (err) {
         console.error("Error al cargar la informacion:", err);
-        setError("Error al obtener los datos del usuario");
-      } finally {
-        setCargando(false);
+        setError("Error de conexión al obtener los datos.");
       }
     };
 
-    obtenerDatos();
+    if (id) {
+      obtenerDatos();
+    }
   }, [id]);
-
 
   return (
     <div className="container my-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>
           Historial de Compras
-          {usuario?.nombre_completo ? ` - ${usuario.nombre_completo}` : ""}
+          {usuario?.nombre ? ` - ${usuario.nombre}` : ""}
         </h2>
         <Link to="/usuarios" className="btn btn-outline-primary">
           Volver a Usuarios
         </Link>
       </div>
 
+      {error && <div className="alert alert-danger">{error}</div>}
 
-      {/* Tabla con el historial de compras*/}
       {!error && compras.length === 0 ? (
         <div className="alert alert-info text-center">
           El usuario no ha realizado compras.
         </div>
       ) : (
-        <Table className="table table-bordered border-primary tabla_gris">
+        <Table responsive className="table table-bordered border-primary tabla_gris">
           <thead className="table-dark text-center">
             <tr>
               <th>ID Compra</th>
               <th>Fecha</th>
-              <th>Productos</th>
+              <th>Cantidad de Productos</th>
               <th>Estado</th>
               <th>Total</th>
             </tr>
           </thead>
           <tbody>
-            {compras.map((compra) => (
-              <tr key={compra.id}>
-                <td className="text-center fw-bold">#{compra.id}</td>
-                <td className="text-center">
-                  {new Date(compra.fecha).toLocaleDateString("es-CL")}
-                </td>
-                <td>
-                  <ul className="list-unstyled mb-0">
-                    {compra.items?.map((item, index) => (
-                      <li key={index}>
-                        • {item.nombre} x{item.cantidad} (${item.precio.toLocaleString("es-CL")})
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-                <td className="text-center">
-                  <Badge
-                    bg={
-                      compra.estado === "Completado"
-                        ? "success"
-                        : compra.estado === "Pendiente"
-                        ? "warning"
-                        : "danger"
-                    }
-                  >
-                    {compra.estado}
-                  </Badge>
-                </td>
-                <td className="text-end fw-bold">
-                  ${compra.total.toLocaleString("es-CL")}
-                </td>
-              </tr>
-            ))}
+            {compras.map((compra) => {
+              const cantidadProductos = compra.items
+                ? compra.items.reduce((acc, item) => acc + (item.cantidad || 1), 0)
+                : 1;
+
+              return (
+                <tr key={compra.id} className="align-middle">
+                  <td className="text-center fw-bold">#{compra.id}</td>
+                  <td className="text-center">
+                    {new Date(compra.fecha).toLocaleDateString("es-CL")}
+                  </td>
+                  <td className="text-center fw-semibold">
+                    {cantidadProductos} {cantidadProductos === 1 ? "producto" : "productos"}
+                  </td>
+                  <td className="text-center">
+                    <Badge bg="success">Completado</Badge>
+                  </td>
+                  <td className="text-end fw-bold">
+                    ${Number(compra.total).toLocaleString("es-CL")}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       )}

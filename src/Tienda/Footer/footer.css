@@ -1,13 +1,14 @@
-.footer_contenedor{
-  background-color: #000000;
-  color: #ffffff;
+.footer_contenedor {
+  background-color: var(--black);
+  color: var(--cream);
   margin: auto;
   padding: 20px;
+  border: 1px solid #2a2114;
 }
 
 /* Marca / Logo */
 .footer_letras {
-  color: #ffffff;
+  color: var(--cream);
   font-weight: 600;
   margin-bottom: 20px;
 }
@@ -19,12 +20,11 @@
 }
 
 .footer_link {
-  color: #ffffff;
+  color: var(--cream);
   transition: color 0.3s ease, opacity 0.3s ease;
 }
 
 .footer_link:hover,
 .footer_link:focus {
-  color: #aca7a7;
-  opacity: 0.8;
+  color: var(--mustard);
 }

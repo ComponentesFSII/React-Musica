@@ -1,189 +1,142 @@
-.contenedor_logo {
-    text-align: center;
-    margin: auto;
+.contenedor {
+    width: 100vw;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 20px;
 }
 
-.contenedor{
-    width: 100%;
-    max-width: 600px;
-    padding: 20px 20px;
-    padding-top: 50px;
-    position: relative;
-    margin: auto;
+.contenedor_logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.contenedor_logo img {
+    width: 250px;
+    max-width: 90%;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 12px;
 }
 
 .contenedor_login,
-.contenedor_registro{
-    width: 100%;
-    padding: 30px;
-    position: relative;
-    margin: auto;
-    background-color: rgba(146, 214, 211, 0.979);
-    border-radius: 20px;
-}
-
-.contenedor_login form,
-.contenedor_registro form{
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
-    padding: 20px;
-    border-radius: 20px;
-    background: white;
-    margin: auto;
+.contenedor_registro,
+.tarjeta_cuenta {
     width: 100%;
     max-width: 450px;
+    padding: 30px;
+    margin: 0 auto;
+    background-color: #14120e;
+    border: 1px solid #2a2114;
+    border-radius: 20px;
     box-sizing: border-box;
 }
 
+.contenedor_login form,
+.contenedor_registro form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
 .contenedor_login form h2,
-.contenedor_registro form h2{
-    font-size: 30px;
+.contenedor_registro form h2,
+.tarjeta_cuenta h2 {
+    font-size: 28px;
     text-align: center;
-    margin-bottom: 10px;
-    color: #033363;
+    margin-bottom: 20px;
+    color: var(--cream);
 }
 
 .contenedor_login form label,
 .contenedor_registro form label {
     display: block;
-    color: #033363;
-    font-size: 16px;
+    color: var(--cream);
+    font-size: 15px;
     font-weight: 600;
     margin-top: 16px;
     margin-bottom: 6px;
-    text-align: left;
 }
 
-/* El primer label dentro del form no necesita margen superior */
 .contenedor_login form label:first-of-type,
 .contenedor_registro form label:first-of-type {
-    margin-top: 0px;
-}
-
-.contenedor_login form input,
-.contenedor_registro form input{
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background: #f2f2f2;
-    font-size: 16px;
-    outline: none;
-    box-sizing: border-box;
-    border-radius: 4px;
-}
-
-.contenedor_login form button,
-.contenedor_registro form button{
-    padding: 10px 40px;
-    margin-top: 25px;
-    border: none;
-    font-size: 15px;
-    background: #033363;
-    color: white;
-    cursor: pointer;
-    outline: none; 
-}
-
-.contenedor_login form button:hover,
-.contenedor_registro form button:hover{
-    background: rgb(8, 159, 185);
-    color: white;
-}
-
-.caja-registro,
-.caja-login{
-    width: 100%;
-    padding: 10px 10px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.caja-registro h4,
-.caja-registro p,
-.caja-login h4,
-.caja-login p{
-    color: #033363;
-}
-
-.caja-registro button,
-.caja-login button{
-    padding: 10px 40px;
-    margin-top: 10px;
-    border: none;
-    font-size: 15px;
-    background: #033363;
-    color: white;
-    cursor: pointer;
-    outline: none; 
-}
-
-.region-comuna {
-    display: flex;
-    gap: 10px;
-}
-
-.region-comuna select,
-.region-comuna input {
-    margin-top: 15px;
-    outline: none;
-    background: #f2f2f2;
-    border: 1px solid #ccc;
-    padding: 8px;
-    font-size: 16px;
-    width: 100%;
-    flex: 1;
-}
-
-/* usuarios logueados*/
-.tarjeta_cuenta {
-    background-color: white;
-    border-radius: 20px;
-    padding: 30px;
-    width: 100%;
-    max-width: 450px;
-    margin: auto;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.tarjeta_cuenta h2 {
-    font-size: 28px;
-    color: #033363;
-    margin-bottom: 20px;
     margin-top: 0;
 }
 
-.perfil_banner {
-    background-color: rgba(146, 214, 211, 0.5);
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+.contenedor_login form input,
+.contenedor_registro form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--coffee);
+    background: var(--black);
+    color: var(--cream);
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+    border-radius: 6px;
 }
 
+.contenedor_login form button,
+.contenedor_registro form button,
+.caja-registro button,
+.caja-login button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    background: var(--brick);
+    color: var(--cream);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
 
-.perfil_info {
-    text-align: left;
+.contenedor_login form button:hover,
+.contenedor_registro form button:hover,
+.caja-registro button:hover,
+.caja-login button:hover {
+    background: var(--mustard);
+    color: var(--black);
+}
+
+.caja-registro,
+.caja-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.error {
+    color: #ff6b6b;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.perfil_banner {
+    background-color: #2a2114;
+    border: 1px solid var(--coffee);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
 }
 
 .perfil_info span {
     font-size: 13px;
-    color: #555;
+    color: var(--mustard);
     display: block;
 }
 
 .perfil_info h3 {
-    margin: 2px 0 0 0;
-    font-size: 16px;
-    color: #033363;
+    margin: 4px 0 0 0;
+    font-size: 18px;
+    color: var(--cream);
     font-weight: 700;
     word-break: break-word;
 }
@@ -196,14 +149,14 @@
     border-radius: 6px;
     font-size: 15px;
     font-weight: 600;
-    background: #033363;
-    color: white;
+    background: var(--mustard);
+    color: var(--black);
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: opacity 0.2s ease;
 }
 
 .btn_admin:hover {
-    background: rgb(8, 159, 185);
+    opacity: 0.9;
 }
 
 .btn_logout {
@@ -213,12 +166,30 @@
     border-radius: 6px;
     font-size: 15px;
     font-weight: 600;
-    background: #cb1313;
-    color: white;
+    background: var(--brick);
+    color: var(--cream);
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .btn_logout:hover {
-    background: #a80f0f;
+    background: #822e25;
+}
+
+.region-comuna {
+    display: flex;
+    gap: 10px;
+}
+
+.region-comuna select,
+.region-comuna input {
+    margin-top: 15px;
+    outline: none;
+    background: var(--black) !important;
+    border: 1px solid var(--coffee) !important;
+    color: var(--cream);
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    flex: 1;
 }

@@ -30,14 +30,6 @@ function Dashboard() {
 
 const cardsData = [
     {
-      id: 'compras',
-      title: 'Total Compras',
-      value: totalCompras,
-      bg: 'primary',
-      icon: <BsCart size={30} className="mb-2" />,
-      text: 'Total de compras realizadas.'
-    },
-    {
       id: 'productos',
       title: 'Total Productos',
       value: totalProductos,
@@ -112,7 +104,7 @@ const dataCardLink= [
       <h1>Dashboard</h1>
     </div>
     {/*tarjetas de metricas */}
-    <Row xs={1} md={3} className="g-4">
+    <Row xs={1} md={2} className="g-4">
       {cardsData.map((item) => (
         <Col key={item.id}>
           <Card bg={item.bg} className="h-100 text-center p-3 shadow-sm">

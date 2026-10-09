@@ -1,4 +1,4 @@
-import Logo from '../../assets/LogoPrueba.png';
+import Logo from '../../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 
@@ -40,7 +40,7 @@ function registro() {
     <>
     <div className="contenedor_logo">
         <img src={Logo} alt="logo" />
-        <h1>Nombre</h1>
+        <h1>Off Beat</h1>
     </div>
 
     <div className="contenedor">
@@ -48,11 +48,19 @@ function registro() {
             <form onSubmit={registro}>
                 <h2>Registrarse</h2>
                 
-                <label htmlFor="nombre_completo">Nombre Completo</label>
+                <label htmlFor="nombre">Nombre</label>
                 <input
                 maxLength="100"
-                name="nombre_completo"
-                placeholder="Nombre Completo"
+                name="nombre"
+                placeholder="Nombre"
+                type="text"
+                required
+                />
+                <label htmlFor="apellido">Apellido</label>
+                <input
+                maxLength="100"
+                name="apellido"
+                placeholder="Apellido"
                 type="text"
                 required
                 />
@@ -106,7 +114,7 @@ function registro() {
                     <option value="metropolitana">Región Metropolitana</option>
                     <option value="aisen">Aisén</option>
                     <option value="antofagasta">Antofagasta</option>
-                    <option value="araucanía">Araucanía</option>
+                    <option value="araucania">Araucanía</option>
                     <option value="arica y parinacota">Arica y Parinacota</option>
                     <option value="atacama">Atacama</option>
                     <option value="biobio">Biobío</option>

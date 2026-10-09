@@ -128,7 +128,7 @@ function EditarUsuario() {
             <option value="metropolitana">Región Metropolitana</option>
             <option value="aisen">Aisén</option>
             <option value="antofagasta">Antofagasta</option>
-            <option value="araucanía">Araucanía</option>
+            <option value="araucania">Araucanía</option>
             <option value="arica y parinacota">Arica y Parinacota</option>
             <option value="atacama">Atacama</option>
             <option value="biobio">Biobío</option>

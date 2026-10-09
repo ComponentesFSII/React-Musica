@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../../assets/LogoPrueba.png';
+import Logo from '../../assets/logo.png';
 import './footer.css';
 
 function Footer() {
@@ -9,7 +9,7 @@ function Footer() {
       <div className="container">
         <h4 className="footer_letras">
           <img alt="logo" src={Logo} className='footer_logo'/>
-          Nombre
+          Off Beat
         </h4>
 
         <ul className="list-inline mb-4">
@@ -51,7 +51,7 @@ function Footer() {
         </ul>
 
         <span className="small">
-          © 2026 Nombre. Todos los derechos reservados.
+          © 2026 Off Beat. Todos los derechos reservados.
         </span>
       </div>
     </footer>

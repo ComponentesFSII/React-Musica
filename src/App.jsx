@@ -12,7 +12,9 @@ import Nosotros from './Tienda/Nosotros/nosotros';
 import Blog from './Tienda/Blog/blogs';
 import Contacto from './Tienda/Contacto/contacto';
 import Categorias from './Tienda/Categorias/categorias';
-import Comprar from './Tienda/Comprar/compras';
+import Compras from './Tienda/Comprar/compras';
+import CompraExito from './Tienda/Comprar/compraExito';
+import CompraFallo from './Tienda/Comprar/compraFallo';
 import Ofertas from './Tienda/Ofertas/ofertas';
 import Login from './Tienda/Login/login';
 import Registro from './Tienda/Login/registro';
@@ -39,15 +41,17 @@ function App() {
         <Route element={<><NavigationBar /><Footer /></>}>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/Productos" element={<Productos />} />
-          <Route path="/Nosotros" element={<Nosotros />} />
-          <Route path="/Blog" element={<Blog />} />
-          <Route path="/Contacto" element={<Contacto />} />
-          <Route path="/Categorias" element={<Categorias />} />
-          <Route path="/Comprar" element={<Comprar />} />
-          <Route path="/Ofertas" element={<Ofertas />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Registro" element={<Registro />} />
+          <Route path="/producto" element={<Productos />} />
+          <Route path="/nosotros" element={<Nosotros />} />
+          <Route path="/blogs" element={<Blog />} />
+          <Route path="/contacto" element={<Contacto />} />
+          <Route path="/categorias" element={<Categorias />} />
+          <Route path="/compras" element={<Compras />} />
+          <Route path="/compraExito" element={<CompraExito />} />
+          <Route path="/compraFallo" element={<CompraFallo />} />
+          <Route path="/ofertas" element={<Ofertas />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
         </Route>
 
         {/* ADMIN solo usuario con el rol = admin*/}
