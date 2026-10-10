@@ -70,20 +70,22 @@ export default function ProductosAdmin() {
 
   return (
     <div className="container-fluid flex-grow-1 p-0">
-      <div className="row m-0 min-vh-100">
-        <div className="col-2 col-sm-3 col-xl-2 bg-dark">
+      <div className="row m-0 min-vh-80">
           <div className="p-4">
             <table className="table">
               <thead>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Código</th>
-                  <th scope="col">Producto</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Categoría</th>
+                  <th scope="col">Stock</th>
                   <th scope="col">Precio</th>
                   <th scope="col">Imagen</th>
                 </tr>
               </thead>
-              <tbody id="table-products">
+              <tbody id="table-products" >
                 {cargando ? (
                   <tr>
                     <td colSpan="5" className="text-center">Cargando productos...</td>
@@ -94,6 +96,9 @@ export default function ProductosAdmin() {
                       <th scope="row">{index + 1}</th>
                       <td>{prod.codigo}</td>
                       <td>{prod.nombre}</td>
+                      <td>{prod.descripcion}</td>
+                      <td>{prod.categoria_nombre}</td>
+                      <td>{prod.stock}</td>
                       <td>${prod.precio}</td>
                       <td>
                         {prod.imagen_url ? (
@@ -129,9 +134,18 @@ export default function ProductosAdmin() {
 
                 <label htmlFor="nombre">Nombre: </label>
                 <input type="text" id="nombre" value={form.nombre} onChange={handleChange} required />
-                
+
+                <label htmlFor="descripcion">Descripción: </label>
+                <input type="text" id="descripcion" value={form.descripcion} onChange={handleChange} required />
+
                 <label htmlFor="precio">Precio: </label>
                 <input type="number" id="precio" value={form.precio} onChange={handleChange} required />
+                
+                <label htmlFor="stock">Stock: </label>
+                <input type="number" id="stock" value={form.stock} onChange={handleChange} required />
+
+                <label htmlFor="categoria">Categoría: </label>
+                <input type="text" id="categoria" value={form.categoria} onChange={handleChange} required />
                 
                 <label htmlFor="imagen">Imagen (URL): </label>
                 <input type="text" id="imagen" value={form.imagen} onChange={handleChange} />
@@ -149,7 +163,8 @@ export default function ProductosAdmin() {
                 </div>
               </form>
             </dialog>
-          </div>
+
+          
         </div>
       </div>
     </div>

@@ -18,16 +18,15 @@ def poblar_base_datos():
     ]
     
     cursor.executemany(
-        'INSERT OR IGNORE INTO categorias (nombre_categoria) VALUES (?)', 
+        'INSERT INTO categorias (nombre_categoria) VALUES (?)', 
         generos
     )
     db.commit()
 
-    # Mapear los IDs de cada categoría
+
     cursor.execute('SELECT id_categoria, nombre_categoria FROM categorias')
     cat_map = {nombre: id_cat for id_cat, nombre in cursor.fetchall()}
 
-    # 2. Insertar Vinilos
     vinilos = [
         ('VIN-001', 'Nevermind - Nirvana', 'Álbum clásico del género Grunge.', 32990, 10, '/vinilos/nevermind.jpg', cat_map.get('Grunge')),
         ('VIN-002', 'OK Computer - Radiohead', 'Álbum icónico de rock alternativo.', 34990, 8, '/vinilos/ok-computer.jpg', cat_map.get('Alternativo')),

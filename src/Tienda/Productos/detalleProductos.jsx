@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { CarritoContext } from '../Carrito/Carrito';
 import './productos.css';
 
-export default function DetalleProductos({ onAgregarCarrito }) {
+export default function DetalleProductos() {
   const { codigo } = useParams();
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+
+  const { agregarProducto } = useContext(CarritoContext);
 
   useEffect(() => {
     const endpoint = codigo ? `/api/productos/${codigo}` : '/api/productos';
@@ -48,6 +51,15 @@ export default function DetalleProductos({ onAgregarCarrito }) {
     return valor ? new Intl.NumberFormat('es-CL').format(valor) : '0';
   };
 
+  const agregarClick = () => {
+    agregarProducto({
+      id: producto.id_producto || producto.codigo,
+      nombre: producto.nombre,
+      precio: producto.precio || 0,
+      imagen: producto.imagen_url
+    });
+  };
+
   return (
     <main className="container my-4">
       <div className="container-presentacion row mb-4">
@@ -73,11 +85,7 @@ export default function DetalleProductos({ onAgregarCarrito }) {
             </p>
           </div>
 
-          <button 
-            type="button" 
-            className="btn btn-info btn-lg btn-carrito text-white"
-            onClick={() => onAgregarCarrito && onAgregarCarrito(producto)}
-          >
+          <button type="button" className="btn btn-info btn-lg btn-carrito text-white" onClick={agregarClick}>
             Agregar al carrito
           </button>
         </div>

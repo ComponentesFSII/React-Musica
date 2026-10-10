@@ -39,12 +39,7 @@ export default function CatalogoProductos() {
             <Link to={`/producto/${prod.codigo}`} className="card-link text-decoration-none">
               <div className="card h-100 text-center p-3 shadow-sm">
                 <div className="img-box mb-2 d-flex align-items-center justify-content-center" style={{ height: '180px' }}>
-                  <img 
-                    src={prod.imagen_url} 
-                    className="img-fluid" 
-                    alt={prod.nombre} 
-                    style={{ maxHeight: '100%', objectFit: 'contain' }}
-                  />
+                  <img src={prod.imagen_url} className="img-fluid" alt={prod.nombre} style={{ maxHeight: '100%', objectFit: 'contain' }}/>
                 </div>
                 <div className="card-body d-flex flex-column justify-content-between p-2">
                   <h6 className="card-title text-dark">{prod.nombre}</h6>
