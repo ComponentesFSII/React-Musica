@@ -40,6 +40,10 @@ pip install flask
 npm install html2pdf.js
 ```
 
+## Intalador Vitest
+```
+npm i -D vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
+```
 ## Paleta de colores
 - brick: #A63D32
 - mustard: #C18A45
