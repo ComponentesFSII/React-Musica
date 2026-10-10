@@ -106,23 +106,32 @@ function Compras() {
       <Button
         as={Link}
         to="/home"
-        variant="outline-primary"
+        className="boton_volver"
       >
         <BsChevronLeft className='me-1'/>Volver
       </Button>
 
       {/*resumen del pedido*/}
-      <Card className="mt-4 mb-4">
+      <Card className="mt-4 mb-4 tarjeta_producto">
         <Card.Body>
-          <Card.Title>Resumen del Pedido</Card.Title>
-          <hr style={{ border: '0', borderTop: '2px solid #000000', margin: '10px 0' }} />
+          <Card.Title className="text_card">Resumen del Pedido</Card.Title>
+          <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
+          
           {/*acordeon con la lista de productos */}
-          <Accordion defaultActiveKey="0">
+          <Accordion defaultActiveKey="0" >
             <Accordion.Item eventKey="0">
               <Accordion.Header>X Articulos</Accordion.Header>
-              <Accordion.Body>
-                <Table striped bordered hover>
-                  <tbody>
+              <Accordion.Body className="p-0">
+                <Table striped bordered hover responsive className="mb-0">
+                  <thead>
+                    <tr>
+                      <th>Imagen</th>
+                      <th>Nombre</th>
+                      <th>Cantidad</th>
+                      <th>SubTotal</th>
+                    </tr>
+                  </thead>
+                  <tbody >
                     <tr>
                       <td>Imagen</td>
                       <td>Nombre</td>
@@ -147,12 +156,12 @@ function Compras() {
             </Accordion.Item>
           </Accordion>
      
-          <hr style={{ border: '0', borderTop: '2px solid #000000', margin: '10px 0' }} />
-          <Card.Text>Total a pagar ${totalPago}</Card.Text>
+          <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
+          <Card.Text className="text_card">Total a pagar ${totalPago}</Card.Text>
         </Card.Body>
       </Card>
 
-    <hr style={{ border: '0', borderTop: '2px solid #000000', margin: '10px 0' }} />
+    <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
       {/*informacion del cliente*/}
       <div className="contenedor_formulario">
         <form onSubmit={submit}>
@@ -190,8 +199,8 @@ function Compras() {
               onChange={handleChange}
             />
             
-          <hr style={{ border: '0', borderTop: '2px solid #000000', margin: '10px 0' }} />
-          
+          <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
+          {/*informacion de envio */}
           <h3>Información Dirección de Envío</h3>
           <label htmlFor="telefono">Teléfono</label>
           <input 

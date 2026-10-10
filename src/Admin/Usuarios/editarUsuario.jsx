@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-
 import './editar_usuario.css';
 
 function EditarUsuario() {
@@ -8,7 +7,8 @@ function EditarUsuario() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    nombre_completo: "",
+    nombre: "",
+    apellido: "",
     rut: "",
     correo: "",
     telefono: "",
@@ -73,11 +73,20 @@ function EditarUsuario() {
         <form onSubmit={handleSubmit}>
           <h2>Editar Usuario</h2>
 
-          <label>Nombre Completo</label>
+          <label>Nombre</label>
           <input
             type="text"
-            name="nombre_completo"
-            value={formData.nombre_completo}
+            name="nombre"
+            value={formData.nombre}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Apellido</label>
+          <input
+            type="text"
+            name="apelldio"
+            value={formData.apellido}
             onChange={handleChange}
             required
           />

@@ -12,7 +12,8 @@
     padding: 40px;
     position: relative;
     margin: auto;
-    background-color: rgba(146, 214, 211, 0.979);
+    background-color: var(--black) !important;
+    border: 1px solid var(--coffee) !important;
     border-radius: 10px;
     box-sizing: border-box;
 }
@@ -24,12 +25,10 @@
     justify-content: center;
     padding: 30px 25px;
     border-radius: 20px;
-    background: white;
     margin: auto;
     width: 100%;
     max-width: 450px;
     box-sizing: border-box;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .contenedor_editarUsuario form h2 {
@@ -38,12 +37,12 @@
     text-align: center;
     margin-top: 0;
     margin-bottom: 15px;
-    color: #033363;
+    color: var(--cream);
 }
 
 .contenedor_editarUsuario form label {
     display: block;
-    color: #033363;
+    color: var(--cream);
     font-size: 15px;
     font-weight: 600;
     margin-top: 14px;
@@ -59,15 +58,14 @@
 .contenedor_editarUsuario form select {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #dcdcdc;
-    background: #f4f4f4;
+    background-color: var(--black) !important;
+    border: 1px solid var(--coffee) !important;
     font-size: 15px;
     outline: none;
     box-sizing: border-box;
     border-radius: 6px;
-    color: #333;
+    color: var(--cream);
 }
-
 
 .region-comuna {
     display: flex;
@@ -79,8 +77,8 @@
 .region-comuna input {
     margin-top: 0;
     outline: none;
-    background: #f4f4f4;
-    border: 1px solid #dcdcdc;
+    background-color: var(--black) !important;
+    border: 1px solid var(--coffee) !important;
     padding: 10px 8px;
     font-size: 14px;
     width: 100%;
@@ -111,19 +109,21 @@
 }
 
 .btn-guardar {
-    background: #033363;
-    color: white;
+    background: var(--mustard) !important;
+    color: var(--cream) !important;
 }
 
 .btn-guardar:hover {
-    background: rgb(8, 159, 185);
+    background: var(--brick) !important;
+    color: var(--cream) !important;
 }
 
 .btn-cancelar {
-    background: #dc3545;
-    color: white;
+    background: var(--brick) !important;
+    color: var(--cream) !important;
 }
 
 .btn-cancelar:hover {
-    background: #f78c00;
+    background: var(--mustard) !important;
+    color: var(--black) !important;
 }

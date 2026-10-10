@@ -2,7 +2,7 @@ import { BsChevronLeft, BsXCircle } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import './compras.css';
+import './boleta.css';
 
 function CompraFallo() {
   const location = useLocation();

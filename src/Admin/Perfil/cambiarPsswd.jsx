@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams} from "react-router-dom";  
-
 import './cambiar_psswd.css';
 
 function CambiarPsswd() {

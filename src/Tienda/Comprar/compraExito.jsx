@@ -5,7 +5,7 @@ import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
 import { useState, useEffect, useRef } from "react";
 import html2pdf from 'html2pdf.js';
-import './compras.css';
+import './boleta.css';
 
 function CompraExito() {
   const location = useLocation();
@@ -45,7 +45,7 @@ function CompraExito() {
   };
 
   return (
-    <main className="container my-4">
+    <main className="container-fluid my-4 pagina_boleta">
       <div className="wireframe-box p-4 mb-5">
         <Button as={Link} to="/home" variant="outline-primary">
           <BsChevronLeft className='me-1'/>Volver al Inicio
