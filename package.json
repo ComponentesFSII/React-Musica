@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently --kill-others \"vite\" \"python3 server/main.py\"",
+    "dev": "concurrently --kill-others \"vite\" \"python server/main.py\"",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"

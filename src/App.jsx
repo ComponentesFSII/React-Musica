@@ -8,6 +8,7 @@ import NavigationBar from './Tienda/Navbar/navbar';
 import Footer from './Tienda/Footer/footer';
 import Home from './Tienda/Home/home';
 import Productos from './Tienda/Productos/producto';
+import DetalleProductos from "./Tienda/Productos/detalleProductos"; 
 import Nosotros from './Tienda/Nosotros/nosotros';
 import Blog from './Tienda/Blog/blogs';
 import Contacto from './Tienda/Contacto/contacto';
@@ -42,6 +43,7 @@ function App() {
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/producto" element={<Productos />} />
+          <Route path="/producto/:codigo" element={<DetalleProductos />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/blogs" element={<Blog />} />
           <Route path="/contacto" element={<Contacto />} />
