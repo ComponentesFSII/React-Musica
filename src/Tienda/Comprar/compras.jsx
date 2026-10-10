@@ -5,11 +5,12 @@ import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
 import './compras.css';
-import { useState, useEffect} from "react";
+import { useState, useEffect, useContext} from "react";
+import {CarritoContext} from "../Carrito/Carrito";
 
 function Compras() {
   const navigate = useNavigate();
-  const [totalPago] = useState(32000)
+  const {carrito, costoTotal, totalProductos, limpiarCarrito} = useContext(CarritoContext);
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -82,7 +83,8 @@ function Compras() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          total: totalPago //cambiarlo luego por la suma del carrito
+          total: costoTotal,
+          productos: carrito
         })
       });
 
@@ -106,53 +108,62 @@ function Compras() {
       <Button
         as={Link}
         to="/home"
-        variant="outline-primary"
+        className="boton_volver"
       >
         <BsChevronLeft className='me-1'/>Volver
       </Button>
 
       {/*resumen del pedido*/}
-      <Card className="mt-4 mb-4">
+      <Card className="mt-4 mb-4 tarjeta_producto">
         <Card.Body>
-          <Card.Title>Resumen del Pedido</Card.Title>
-          <hr style={{ border: '0', borderTop: '2px solid #000000', margin: '10px 0' }} />
+          <Card.Title className="text_card">Resumen del Pedido</Card.Title>
+          <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
+          
           {/*acordeon con la lista de productos */}
-          <Accordion defaultActiveKey="0">
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>X Articulos</Accordion.Header>
-              <Accordion.Body>
-                <Table striped bordered hover>
-                  <tbody>
+          <Accordion defaultActiveKey="0" className="w-100" >
+            <Accordion.Item eventKey="0" className="w-100">
+              <Accordion.Header className="w-100">{totalProductos} Articulo(s)</Accordion.Header>
+              <Accordion.Body className="p-0">
+                <Table striped bordered hover responsive className="mb-0 w-100">
+                  <thead>
                     <tr>
-                      <td>Imagen</td>
-                      <td>Nombre</td>
-                      <td>Cantidad</td>
-                      <td>SubTotal</td>
+                      <th>Imagen</th>
+                      <th>Nombre</th>
+                      <th>Cantidad</th>
+                      <th>SubTotal</th>
                     </tr>
-                    <tr>
-                      <td>Imagen</td>
-                      <td>Nombre</td>
-                      <td>Cantidad</td>
-                      <td>SubTotal</td>
-                    </tr>
-                    <tr>
-                      <td>Imagen</td>
-                      <td>Nombre</td>
-                      <td>Cantidad</td>
-                      <td>SubTotal</td>
-                    </tr>
+                  </thead>
+                  <tbody >
+                    {carrito.length === 0 ? (
+                      <tr>
+                        <td colSpan="4" className="text-center py-3">No hay productos en el carrito</td>
+                      </tr>
+                    ) : (
+                      carrito.map((item) => (
+                        <tr key={item.id}>
+                          <td>
+                            <img src={item.imagen} alt={item.nombre}
+                            style={{ width: '40px', height: '40px', objectFit: 'contain' }}>
+                            </img>
+                          </td>
+                          <td>{item.nombre}</td>
+                          <td>{item.cantidad}</td>
+                          <td>${(item.precio * item.cantidad).toLocaleString('es-CL')}</td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </Table>
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>
      
-          <hr style={{ border: '0', borderTop: '2px solid #000000', margin: '10px 0' }} />
-          <Card.Text>Total a pagar ${totalPago}</Card.Text>
+          <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
+          <Card.Text className="text_card">Total a pagar ${costoTotal.toLocaleString('es-CL')}</Card.Text>
         </Card.Body>
       </Card>
 
-    <hr style={{ border: '0', borderTop: '2px solid #000000', margin: '10px 0' }} />
+    <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
       {/*informacion del cliente*/}
       <div className="contenedor_formulario">
         <form onSubmit={submit}>
@@ -190,8 +201,8 @@ function Compras() {
               onChange={handleChange}
             />
             
-          <hr style={{ border: '0', borderTop: '2px solid #000000', margin: '10px 0' }} />
-          
+          <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
+          {/*informacion de envio */}
           <h3>Información Dirección de Envío</h3>
           <label htmlFor="telefono">Teléfono</label>
           <input 
@@ -266,7 +277,7 @@ function Compras() {
 
           {/* Botón de pagar */}
           <div className="container mt-4">
-            <Button type="submit" className="boton">Pagar ${totalPago}</Button>
+            <Button type="submit" className="boton">Pagar ${costoTotal.toLocaleString('es-CL')}</Button>
           </div>
 
         </form>

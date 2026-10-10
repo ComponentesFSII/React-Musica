@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Badge from "react-bootstrap/Badge";
-
+import './historialCompra.css'
 
 function HistorialCompra() {
   const { id } = useParams();
@@ -44,11 +44,11 @@ function HistorialCompra() {
   return (
     <div className="container my-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>
+        <h2 className="titulo">
           Historial de Compras
           {usuario?.nombre ? ` - ${usuario.nombre}` : ""}
         </h2>
-        <Link to="/usuarios" className="btn btn-outline-primary">
+        <Link to="/usuarios" className="btn boton_volver">
           Volver a Usuarios
         </Link>
       </div>
@@ -60,8 +60,8 @@ function HistorialCompra() {
           El usuario no ha realizado compras.
         </div>
       ) : (
-        <Table responsive className="table table-bordered border-primary tabla_gris">
-          <thead className="table-dark text-center">
+        <Table responsive className="table table-bordered">
+          <thead className="text-center tabla_historial">
             <tr>
               <th>ID Compra</th>
               <th>Fecha</th>

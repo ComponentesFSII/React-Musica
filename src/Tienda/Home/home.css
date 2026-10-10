@@ -378,6 +378,11 @@
   transform: translateY(-6px);
 }
 
+.genre-card.grunge{
+  background: var(--cream);
+  color: var(--black);
+}
+
 .genre-card.rock {
   background: var(--brick);
   color: var(--cream);
@@ -388,13 +393,18 @@
   color: var(--cream);
 }
 
-.genre-card.jazz {
+.genre-card.indie{
   background: var(--mustard);
   color: var(--black);
 }
 
 .genre-card.soul {
   background: var(--moss);
+  color: var(--cream);
+}
+
+.genre-card.glam {
+  background: #2a7b8f;
   color: var(--cream);
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
+
 import ProtectedRoute from './ProtectedRoute';
 
 //rutas de la tienda
@@ -7,7 +8,7 @@ import NavigationBar from './Tienda/Navbar/navbar';
 import Footer from './Tienda/Footer/footer';
 import Home from './Tienda/Home/home';
 import Productos from './Tienda/Productos/producto';
-import DetalleProductos from "./Tienda/Productos/detalleProductos"; 
+import DetalleProductos from "./Tienda/Productos/detalleProductos";
 import { CarritoContext, carrito as CarritoProvider} from './Tienda/Carrito/Carrito';
 import DetallesCarrito from './Tienda/Carrito/DetallesCarrito';
 import Nosotros from './Tienda/Nosotros/nosotros';
@@ -38,8 +39,9 @@ function App() {
   return (
     <BrowserRouter>
 
-      <CarritoProvider>
+    <CarritoProvider>
       <Routes>
+
         {/* TIENDA */}
         <Route element={<><NavigationBar /><Footer /></>}>
           <Route path="/" element={<Navigate to="/home" replace />} />
@@ -74,6 +76,7 @@ function App() {
             <Route path="/ordenes" element={<Ordenes/>} />
           </Route>
         </Route>
+
       </Routes>
       </CarritoProvider>
     </BrowserRouter>

@@ -1,65 +1,7 @@
-import { useState } from 'react'
-import { BsArrowRightShort, BsArrowUpRight, BsBag, BsDisc, BsCheck } from "react-icons/bs"
+import { useState, useEffect } from 'react'
+import { BsArrowRightShort, BsArrowUpRight, BsDisc} from "react-icons/bs"
 import { Link } from 'react-router-dom'
 import './home.css'
-
-const vinilos = [
-  {
-    id: 1,
-    nombre: 'Nevermind',
-    artista: 'Nirvana',
-    genero: 'Grunge',
-    precio: 32990,
-    imagen: '/vinilos/nevermind.jpg'
-  },
-  {
-    id: 2,
-    nombre: 'OK Computer',
-    artista: 'Radiohead',
-    genero: 'Alternativo',
-    precio: 34990,
-    imagen: '/vinilos/ok-computer.jpg'
-  },
-  {
-    id: 3,
-    nombre: 'Rumours',
-    artista: 'Fleetwood Mac',
-    genero: 'Rock',
-    precio: 32990,
-    imagen: '/vinilos/rumours.jpg'
-  },
-  {
-    id: 4,
-    nombre: 'The Queen Is Dead',
-    artista: 'The Smiths',
-    genero: 'Indie',
-    precio: 29990,
-    imagen: '/vinilos/the-queen-is-dead.jpg'
-  },
-  {
-    id: 5,
-    nombre: 'Ziggy Stardust',
-    artista: 'David Bowie',
-    genero: 'Glam Rock',
-    precio: 32990,
-    imagen: '/vinilos/ziggy-stardust.jpg'
-  },
-  {
-    id: 6,
-    nombre: 'Back to Black',
-    artista: 'Amy Winehouse',
-    genero: 'Soul',
-    precio: 28990,
-    imagen: '/vinilos/back-to-black.jpg'
-  }
-]
-
-const generos = [
-  { nombre: 'ROCK', numero: '01', clase: 'rock' },
-  { nombre: 'ALTERNATIVO', numero: '02', clase: 'alternative' },
-  { nombre: 'JAZZ', numero: '03', clase: 'jazz' },
-  { nombre: 'SOUL & FUNK', numero: '04', clase: 'soul' }
-]
 
 const formatoPrecio = (precio) =>
   precio.toLocaleString('es-CL', {
@@ -69,15 +11,26 @@ const formatoPrecio = (precio) =>
   })
 
 function Home() {
-  const [agregados, setAgregados] = useState([])
+  const [productos, setProductos] = useState([]);
 
-  const agregarCarrito = (vinilo) => {
-    setAgregados((actual) =>
-      actual.includes(vinilo.id)
-        ? actual
-        : [...actual, vinilo.id]
-    )
-  }
+  useEffect(() => {
+    const cargarProductos = async () => {
+      try{
+        const res = await fetch ('/api/productos')
+        const data = await res.json()
+        setProductos(data.productos || [])
+      }
+      catch (error){
+        console.error("Error al conectar al servidor", error)
+      }
+    }
+    cargarProductos()
+  }, []);
+
+  const categorias = Array.from(
+    new Set(productos.map(p => p.categoria_nombre).filter(Boolean))
+  )
+  const categoriasPorDefecto = ['grunge','alternative','rock', 'indie','glam','soul']
 
   return (
     <main className="offbeat-home">
@@ -157,53 +110,34 @@ function Home() {
         </div>
 
         <div className="vinyl-grid">
-          {vinilos.map((vinilo) => {
-            const agregado = agregados.includes(vinilo.id)
+          {productos.slice(0, 6).map((prod) => {
+            const idUnico = prod.id_producto || prod.codigo
 
             return (
-              <article className="vinyl-card" key={vinilo.id}>
-                <div className="vinyl-artwork">
-                  <img
-                    src={vinilo.imagen}
-                    alt={`Portada de ${vinilo.nombre}`}
-                    loading="lazy"
-                  />
+              <article className="vinyl-card" key={idUnico}>
+                <Link to={`/producto/${prod.codigo}`} className="text-decoration-none text-dark">
+                  <div className="vinyl-artwork">
+                    <img
+                      src={prod.imagen_url}
+                      alt={`Portada de ${prod.nombre}`}
+                      loading="lazy"
+                    />
 
-                  <span className="vinyl-genre">
-                    {vinilo.genero}
-                  </span>
-                </div>
-
-                <div className="vinyl-details">
-                  <div className="vinyl-description">
-                    <h3>{vinilo.nombre}</h3>
-                    <p>{vinilo.artista}</p>
-                    <strong>
-                      {formatoPrecio(vinilo.precio)}
-                    </strong>
+                    <span className="vinyl-genre">
+                      {prod.categoria_nombre || 'VINILO'}
+                    </span>
                   </div>
 
-                  <button
-                    type="button"
-                    className={`vinyl-add ${agregado ? 'added' : ''}`}
-                    onClick={() => agregarCarrito(vinilo)}
-                    aria-label={
-                      agregado
-                        ? `${vinilo.nombre} seleccionado`
-                        : `Seleccionar ${vinilo.nombre}`
-                    }
-                    title={
-                      agregado
-                        ? 'Seleccionado en esta demostración'
-                        : 'Seleccionar disco'
-                    }
-                  >
-                    {agregado
-                      ? <BsCheck size={19} />
-                      : <BsBag size={19} />
-                    }
-                  </button>
-                </div>
+                  <div className="vinyl-details">
+                    <div className="vinyl-description">
+                      <h3>{prod.nombre}</h3>
+                      <p>{prod.descripcion || 'Album en vinilo'}</p>
+                      <strong>
+                        {formatoPrecio(prod.precio)}
+                      </strong>
+                    </div>
+                  </div>
+                </Link>
               </article>
             )
           })}
@@ -224,24 +158,29 @@ function Home() {
         </div>
 
         <div className="genre-grid">
-          {generos.map((genero) => (
-            <Link
-              to={`/productos?genero=${encodeURIComponent(genero.nombre)}`}
-              className={`genre-card ${genero.clase}`}
-              key={genero.numero}
-            >
-              <span className="genre-number">
-                {genero.numero} / OFFBEAT
-              </span>
+          {categorias.map((nombreCategoria, index) => {
+            const claseCss = categoriasPorDefecto[index % categoriasPorDefecto.length]
+            const numeroFormateado = String(index + 1).padStart(2, '0')
 
-              <BsDisc className="genre-disc" />
+            return (
+              <Link
+                to='/categorias'
+                className={`genre-card ${claseCss}`}
+                key={nombreCategoria}
+              >
+                <span className="genre-number">
+                  {numeroFormateado} / OFFBEAT
+                </span>
 
-              <div className="genre-bottom">
-                <h3>{genero.nombre}</h3>
-                <BsArrowUpRight size={25} />
-              </div>
-            </Link>
-          ))}
+                <BsDisc className="genre-disc" />
+
+                <div className="genre-bottom">
+                  <h3>{nombreCategoria}</h3>
+                  <BsArrowUpRight size={25} />
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </section>
     </main>

@@ -5,7 +5,7 @@ import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
 import { useState, useEffect, useRef } from "react";
 import html2pdf from 'html2pdf.js';
-import './compras.css';
+import './boleta.css';
 
 function CompraExito() {
   const location = useLocation();
@@ -45,13 +45,13 @@ function CompraExito() {
   };
 
   return (
-    <main className="container my-4">
+    <main className="container-fluid my-4 pagina_boleta">
       <div className="wireframe-box p-4 mb-5">
         <Button as={Link} to="/home" variant="outline-primary">
           <BsChevronLeft className='me-1'/>Volver al Inicio
         </Button>
 
-        <div ref={boleta} className="p-3 bg-white">
+        <div ref={boleta} className="p-3 bg-white boleta-exportable">
           <h1 className="mt-4 text-success">
             <BsCheckCircle className="me-2" color="#31cc12" />
             ¡Compra realizada con exito! nro #{compraId}
@@ -62,7 +62,7 @@ function CompraExito() {
               <Card className="mt-4 mb-4">
                 <Card.Header as="h5">Informacion del Cliente</Card.Header>
                 <Card.Body>
-                  <p><strong>Nombre completo:</strong> {compra.nombre} {compra.apellido}</p>
+                  <p><strong>Nombre</strong> {compra.nombre} {compra.apellido}</p>
                   <p><strong>Correo Electrónico:</strong> {compra.correo}</p>
                   <p className="mb-0"><strong>Teléfono de contacto:</strong> {compra.telefono}</p>
                 </Card.Body>
@@ -80,11 +80,10 @@ function CompraExito() {
               </Card>
 
               <h4 className="mb-3">Detalle del Pedido</h4>
-              <div className="tabla_productos">
+              <div>
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Imagen</th>
                       <th>Nombre</th>
                       <th>Precio</th>
                       <th>Cantidad</th>
@@ -92,13 +91,14 @@ function CompraExito() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Imagen</td>
-                      <td>Producto Ejemplo</td>
-                      <td>${compra.total}</td>
-                      <td>1</td>
-                      <td>${compra.total}</td>
-                    </tr>
+                    {compra.productos && compra.productos.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.nombre_producto}</td>
+                        <td>${item.precio.toLocaleString('es-CL')}</td>
+                        <td>{item.cantidad}</td>
+                        <td>${(item.precio * item.cantidad).toLocaleString('es-CL')}</td>
+                      </tr>
+                    ))}
                     <tr>
                       <th colSpan={5} className="text-end pe-4 fs-5">
                         Total pagado: ${compra.total}

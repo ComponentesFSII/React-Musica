@@ -56,7 +56,7 @@ export default function DetalleProductos() {
       id: producto.id_producto || producto.codigo,
       nombre: producto.nombre,
       precio: producto.precio || 0,
-      imagen: producto.imagen_url
+      imagen: producto.imagen_url || 'https://via.placeholder.com/300?text=Sin+Imagen'
     });
   };
 

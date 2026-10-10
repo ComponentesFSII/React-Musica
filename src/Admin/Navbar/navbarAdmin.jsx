@@ -18,9 +18,8 @@ function NavbarAdmin() {
     <div className="admin-layout container-fluid flex-grow-1 p-0">
       <div className="row m-0 min-vh-100">
 
-        {/* Menú lateral Sidebar */}
+        {/* Menú lateral*/}
         <div className="col-12 col-md-3 col-xl-2 admin-sidebar p-0">
-          
           <Navbar className="sidebar-header border-bottom">
             <Container fluid className="px-3">
               <Navbar.Brand as={Link} to="/dashboard" className="sidebar-logo">
@@ -55,10 +54,8 @@ function NavbarAdmin() {
           </Nav>
         </div>
 
-        {/* Área de Contenido Principal */}
         <div className="col-12 col-md-9 col-xl-10 p-0 m-0 admin-main">
-
-          {/* Navbar Superior */}
+          {/*navbar superior */}
           <Navbar className="admin-topbar">
             <Container fluid className="px-4">
               <Nav className="ms-auto align-items-center">
@@ -69,6 +66,7 @@ function NavbarAdmin() {
             </Container>
           </Navbar>
 
+          {/*contenido de la pagina */}
           <div className="p-4 admin-content">
             <Outlet />
           </div>

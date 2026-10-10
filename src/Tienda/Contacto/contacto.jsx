@@ -1,14 +1,12 @@
 import Logo from '../../assets/logo.png';
 import './contacto.css'
-
 import { useState } from 'react'; 
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
-
-import { BsEnvelopeAt, BsPinMapFill, BsPhone  } from "react-icons/bs";
+import { BsEnvelopeAt, BsPinMapFill, BsPhone, BsSend } from "react-icons/bs";
 
 function Contacto() {
   const [datos, setDatos] = useState({
@@ -146,7 +144,7 @@ function Contacto() {
                   onChange={handleChange}
                 />
                 <button className="btn btn-primary" type="submit">
-                  Enviar Mensaje
+                  <BsSend className='me-2'/>Enviar Mensaje
                 </button>
               </form>
             </div>

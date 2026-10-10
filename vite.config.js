@@ -8,6 +8,12 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
+  //test
+  test: {
+  environment: 'jsdom',
+  globals: true,
+  setupFiles: './src/setupTests.js',
+  },
   server: {
     proxy: {
       '/api': 'http://localhost:3000'
