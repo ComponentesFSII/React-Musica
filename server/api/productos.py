@@ -139,3 +139,34 @@ def eliminarProducto(codigo):
         return jsonify({"error": f"Producto con codigo: {codigo} no encontrado"}), 404
         
     return jsonify({"mensaje": f"Producto con codigo: {codigo} eliminado correctamente"}), 200
+
+@app.get('/api/categorias')
+def obtenerCategorias():
+    query = "SELECT id_categoria, nombre_categoria FROM categorias"
+    rows = db.execute(query).fetchall()
+    categorias = [dict(row) for row in rows]
+    return jsonify({'ok': True, 'categorias': categorias})
+
+
+@app.post('/api/categorias/agregar')
+def agregarCategorias():
+    body = request.get_json() or {}
+    nombre_categoria = body.get('nombre_categoria')
+    
+    if not nombre_categoria: 
+        return jsonify({'ok': False, 'error': 'Falta el nombre de la categoría'}), 400
+        
+    try:
+        cursor = db.execute(
+            'INSERT INTO categorias (nombre_categoria) VALUES (?)',
+            (nombre_categoria,)
+        )
+        db.commit()
+    except Exception as e:
+        return jsonify({'ok': False, 'error': 'La categoría ya existe'}), 400
+    
+    return jsonify({
+        'ok': True,
+        'mensaje': 'Categoría registrada exitosamente',
+        'categoria_id': cursor.lastrowid
+    }), 201

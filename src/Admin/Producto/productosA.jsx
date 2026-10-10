@@ -83,6 +83,8 @@ export default function ProductosAdmin() {
                   <th scope="col">Stock</th>
                   <th scope="col">Precio</th>
                   <th scope="col">Imagen</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody id="table-products" >
@@ -107,6 +109,9 @@ export default function ProductosAdmin() {
                           'Sin imagen'
                         )}
                       </td>
+                      <td><button className='btn btn-info'>Editar</button></td>
+                      <td><button className='btn btn-danger'>Eliminar</button></td>
+
                     </tr>
                   ))
                 ) : (
