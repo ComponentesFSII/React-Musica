@@ -1,100 +1,101 @@
-import { useState, useEffect, useRef } from "react";
-import Button from 'react-bootstrap/Button';
+import { useState, useEffect } from "react";
 import Table from 'react-bootstrap/Table';
 import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import { BsFileEarmarkPdf, BsExclamationTriangle, BsSearch } from "react-icons/bs";
-import html2pdf from 'html2pdf.js';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { BsExclamationTriangle, BsBoxSeam, BsCheckCircle, BsXCircle } from "react-icons/bs";
 import './reporte.css';
 
 function Reportes() {
-  const [compras, setCompras] = useState([]);
   const [productosCriticos, setProductosCriticos] = useState([]);
-  const [usuarios, setUsuarios] = useState([]);
-  const [filtroUsuarioId, setFiltroUsuarioId] = useState('');
-  const [compraSeleccionada, setCompraSeleccionada] = useState(null);
-  const boletaRef = useRef(null);
+  const [totalProductos, setTotalProductos] = useState(0);
+  const [productosEnStock, setProductosEnStock] = useState(0);
+  const [productosAgotados, setProductosAgotados] = useState(0);
 
   useEffect(() => {
-    cargarCompras();
-    cargarUsuarios();
-    cargarProductosCriticos();
+    cargarDatosReporte();
   }, []);
 
-  const cargarCompras = async () => {
+  const cargarDatosReporte = async () => {
     try {
-      const res = await fetch('/api/compras');
+      const res = await fetch('/api/productos');
       const data = await res.json();
-      if (data.ok) setCompras(data.compras);
-    } catch (error) {
-      console.error("Error al cargar compras:", error);
-    }
-  };
-
-  const cargarUsuarios = async () => {
-    try {
-      const res = await fetch('/api/usuarios');
-      const data = await res.json();
-      if (data.ok) setUsuarios(data.usuarios);
-    } catch (error) {
-      console.error("Error al cargar usuarios:", error);
-    }
-  };
-
-  const cargarProductosCriticos = async () => {
-    try {
-      const res = await fetch('/api/productos'); 
-      const data = await res.json();
+      
       if (data.ok && data.productos) {
-        const criticos = data.productos.filter(p => p.stock < 5);
+        const productos = data.productos;
+        setTotalProductos(productos.length);
+        const enStock = productos.filter(p => p.stock > 0).length;
+        setProductosEnStock(enStock);
+        const agotados = productos.filter(p => p.stock === 0).length;
+        setProductosAgotados(agotados);
+        const criticos = productos.filter(p => p.stock <= 6);
         setProductosCriticos(criticos);
       }
     } catch (error) {
-  
-      setProductosCriticos([
-        { id: 1, nombre: 'Minecraft', stock: 2, precio: 2695 },
-        { id: 2, nombre: 'Hollow Knight', stock: 1, precio: 1499 }
-      ]);
+      console.error("Error al cargar datos de productos:", error);
+      setProductosCriticos([]);
     }
-  };
-
-  const comprasFiltradas = filtroUsuarioId 
-    ? compras.filter(c => String(c.usuario_id) === String(filtroUsuarioId))
-    : compras;
-
-  const descargarBoletaPDF = (compra) => {
-    setCompraSeleccionada(compra);
-    
-    setTimeout(() => {
-      const elemento = boletaRef.current;
-      if (!elemento) return;
-      const opciones = {
-        margin: 10,
-        filename: `boleta_admin_${compra.id}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-      };
-      
-      html2pdf().set(opciones).from(elemento).save();
-    }, 500);
   };
 
   return (
     <main className="container my-4">
       <div className="wireframe-box p-4 mb-5 tabla_historial rounded shadow-sm">
-        <h2 className="titulo mb-4">Reportes</h2>
+        <h2 className="titulo mb-4">Reportes de Inventario</h2>
 
-        {/*productos criticos*/}
+        {/*tarjeta productos*/}
+        <Row xs={1} md={3} className="g-4 mb-4">
+          <Col>
+            <Card className="h-100 text-center p-3 shadow-sm total_productos">
+              <Card.Body>
+                <Card.Title className="titulo_metrica">
+                  <BsBoxSeam size={30} className="mb-2" /> Total Productos
+                </Card.Title>
+                <h2 className="text_metricas">{totalProductos}</h2>
+                <Card.Text className="text_metricas">
+                  Variedad de discos registrados.
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col>
+            <Card className="h-100 text-center p-3 shadow-sm en_stock">
+              <Card.Body>
+                <Card.Title className="titulo_metrica">
+                  <BsCheckCircle size={30} className="mb-2" /> Productos en Stock
+                </Card.Title>
+                <h2 className="text_metricas">{productosEnStock}</h2>
+                <Card.Text className="text_metricas">
+                  Disponibles para la venta.
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col>
+            <Card className="h-100 text-center p-3 shadow-sm sin_stock">
+              <Card.Body>
+                <Card.Title className="titulo_metrica">
+                  <BsXCircle size={30} className="mb-2" /> Productos Agotados
+                </Card.Title>
+                <h2 className="text_metricas">{productosAgotados}</h2>
+                <Card.Text className="text_metricas">
+                  Sin stock disponible actualmente.
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Productos Críticos */}
         <Card className="mb-4 tabla_historial border border-danger">
           <Card.Header className="bg-danger text-white d-flex align-items-center">
             <BsExclamationTriangle className="me-2" size={20} />
-            <strong>Listado de Productos Criticos (Stock Reducido &lt; 5)</strong>
+            <strong>Listado de Productos Críticos (Stock Reducido &lt; 6)</strong>
           </Card.Header>
           <Card.Body>
             {productosCriticos.length === 0 ? (
-              <p className="titulo mb-0">No hay productos con stock critico en este momento.</p>
+              <p className="titulo mb-0 text-center py-3">No hay productos con stock crítico en este momento.</p>
             ) : (
               <Table className="table-bordered tabla_historial" responsive>
                 <thead>
@@ -107,11 +108,11 @@ function Reportes() {
                 </thead>
                 <tbody>
                   {productosCriticos.map(prod => (
-                    <tr key={prod.id}>
-                      <td>{prod.id}</td>
+                    <tr key={prod.id_producto || prod.codigo}>
+                      <td>{prod.id_producto || prod.codigo}</td>
                       <td>{prod.nombre}</td>
                       <td><span className="badge bg-danger">{prod.stock} un.</span></td>
-                      <td>${prod.precio}</td>
+                      <td>${prod.precio ? prod.precio.toLocaleString('es-CL') : 0}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -119,90 +120,6 @@ function Reportes() {
             )}
           </Card.Body>
         </Card>
-
-        {/*historial compras*/}
-        <Card className="mb-4 tabla_historial">
-          <Card.Header className="d-flex justify-content-between align-items-center bg-dark text-white">
-            <strong>Historial de Compras de Usuarios</strong>
-            <div className="d-flex align-items-center gap-2" style={{ width: '320px' }}>
-              <BsSearch className="text-white" />
-              <Form.Select 
-                size="sm" 
-                value={filtroUsuarioId} 
-                onChange={(e) => setFiltroUsuarioId(e.target.value)}
-              >
-                <option value="">Filtrar por usuario (Todos)</option>
-                {usuarios.map(u => (
-                  <option key={u.id} value={u.id}>
-                    {u.nombre} {u.apellido} ({u.correo})
-                  </option>
-                ))}
-              </Form.Select>
-            </div>
-          </Card.Header>
-          <Card.Body>
-            <Table className="table-bordered tabla_historial" responsive>
-              <thead>
-                <tr>
-                  <th>N° Orden</th>
-                  <th>Fecha</th>
-                  <th>Cliente</th>
-                  <th>Correo</th>
-                  <th>Total</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {comprasFiltradas.length === 0 ? (
-                  <tr>
-                    <td colSpan="6" className="text-center titulo">No se encontraron registros de compras.</td>
-                  </tr>
-                ) : (
-                  comprasFiltradas.map(compra => (
-                    <tr key={compra.id}>
-                      <td>#{compra.id}</td>
-                      <td>{compra.fecha}</td>
-                      <td>{compra.nombre} {compra.apellido}</td>
-                      <td>{compra.correo}</td>
-                      <td>${compra.total}</td>
-                      <td>
-                        <Button 
-                          className="botonPDF"
-                          size="sm" 
-                          onClick={() => descargarBoletaPDF(compra)}
-                        >
-                          <BsFileEarmarkPdf className="me-1" /> Descargar Boleta
-                        </Button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </Table>
-          </Card.Body>
-        </Card>
-
-        {/*contenedor que general la boleta en PDF */}
-        <div style={{ display: 'none' }}>
-          {compraSeleccionada && (
-            <div ref={boletaRef} className="p-4 bg-white text-dark" style={{ width: '600px' }}>
-              <h3 className="text-success mb-3">Boleta Electrónica - Nro #{compraSeleccionada.id}</h3>
-              <p><strong>Fecha:</strong> {compraSeleccionada.fecha}</p>
-              <hr />
-              <h5>Datos del Cliente</h5>
-              <p><strong>Nombre:</strong> {compraSeleccionada.nombre} {compraSeleccionada.apellido}</p>
-              <p><strong>Correo:</strong> {compraSeleccionada.correo}</p>
-              <p><strong>Teléfono:</strong> {compraSeleccionada.telefono}</p>
-              <hr />
-              <h5>Dirección de Envío</h5>
-              <p><strong>Calle:</strong> {compraSeleccionada.calle} {compraSeleccionada.depo ? `, Dpto: ${compraSeleccionada.depo}` : ''}</p>
-              <p><strong>Comuna / Región:</strong> {compraSeleccionada.comuna}, {compraSeleccionada.region}</p>
-              {compraSeleccionada.indicacion && <p><strong>Indicaciones:</strong> {compraSeleccionada.indicacion}</p>}
-              <hr />
-              <h4 className="text-end mt-4">Total Pagado: ${compraSeleccionada.total}</h4>
-            </div>
-          )}
-        </div>
 
       </div>
     </main>

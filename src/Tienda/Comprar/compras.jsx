@@ -5,11 +5,12 @@ import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
 import './compras.css';
-import { useState, useEffect} from "react";
+import { useState, useEffect, useContext} from "react";
+import {CarritoContext} from "../Carrito/Carrito";
 
 function Compras() {
   const navigate = useNavigate();
-  const [totalPago] = useState(32000)
+  const {carrito, costoTotal, totalProductos, limpiarCarrito} = useContext(CarritoContext);
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -82,7 +83,8 @@ function Compras() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          total: totalPago //cambiarlo luego por la suma del carrito
+          total: costoTotal,
+          productos: carrito
         })
       });
 
@@ -118,11 +120,11 @@ function Compras() {
           <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
           
           {/*acordeon con la lista de productos */}
-          <Accordion defaultActiveKey="0" >
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>X Articulos</Accordion.Header>
+          <Accordion defaultActiveKey="0" className="w-100" >
+            <Accordion.Item eventKey="0" className="w-100">
+              <Accordion.Header className="w-100">{totalProductos} Articulo(s)</Accordion.Header>
               <Accordion.Body className="p-0">
-                <Table striped bordered hover responsive className="mb-0">
+                <Table striped bordered hover responsive className="mb-0 w-100">
                   <thead>
                     <tr>
                       <th>Imagen</th>
@@ -132,24 +134,24 @@ function Compras() {
                     </tr>
                   </thead>
                   <tbody >
-                    <tr>
-                      <td>Imagen</td>
-                      <td>Nombre</td>
-                      <td>Cantidad</td>
-                      <td>SubTotal</td>
-                    </tr>
-                    <tr>
-                      <td>Imagen</td>
-                      <td>Nombre</td>
-                      <td>Cantidad</td>
-                      <td>SubTotal</td>
-                    </tr>
-                    <tr>
-                      <td>Imagen</td>
-                      <td>Nombre</td>
-                      <td>Cantidad</td>
-                      <td>SubTotal</td>
-                    </tr>
+                    {carrito.length === 0 ? (
+                      <tr>
+                        <td colSpan="4" className="text-center py-3">No hay productos en el carrito</td>
+                      </tr>
+                    ) : (
+                      carrito.map((item) => (
+                        <tr key={item.id}>
+                          <td>
+                            <img src={item.imagen} alt={item.nombre}
+                            style={{ width: '40px', height: '40px', objectFit: 'contain' }}>
+                            </img>
+                          </td>
+                          <td>{item.nombre}</td>
+                          <td>{item.cantidad}</td>
+                          <td>${(item.precio * item.cantidad).toLocaleString('es-CL')}</td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </Table>
               </Accordion.Body>
@@ -157,7 +159,7 @@ function Compras() {
           </Accordion>
      
           <hr style={{ border: '0', borderTop: '2px solid #FFF3CF', margin: '10px 0' }} />
-          <Card.Text className="text_card">Total a pagar ${totalPago}</Card.Text>
+          <Card.Text className="text_card">Total a pagar ${costoTotal.toLocaleString('es-CL')}</Card.Text>
         </Card.Body>
       </Card>
 
@@ -275,7 +277,7 @@ function Compras() {
 
           {/* Botón de pagar */}
           <div className="container mt-4">
-            <Button type="submit" className="boton">Pagar ${totalPago}</Button>
+            <Button type="submit" className="boton">Pagar ${costoTotal.toLocaleString('es-CL')}</Button>
           </div>
 
         </form>

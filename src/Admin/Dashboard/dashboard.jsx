@@ -9,11 +9,10 @@ import { BsClipboard2Data,BsPersonCircle,BsBarChart,BsTags,BsBasket2 } from "rea
 
 function Dashboard() {
   const [totalUsuarios, setTotalUsuarios] = useState(0);
-
-  //valores estaticos para las otras metricas
-  const totalProductos = 0;
+  const [totalProductos, setTotalProductos] = useState(0);
 
   useEffect(() => {
+    //obtener el total de usuarios
     fetch('/api/usuarios/count')
       .then((response) => response.json())
       .then((data) => {
@@ -24,6 +23,18 @@ function Dashboard() {
       .catch((error) => {
         console.error("Error al obtener los usuarios:", error);
       });
+
+      //obtener el total de productos
+      fetch('/api/productos')
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.ok && data.productos){
+            setTotalProductos(data.productos.length);
+          }
+        })
+        .catch((error) => {
+          console.error("Error al obtener los productos", error);
+        });
   }, []);
 
 const cardsData = [
@@ -105,8 +116,8 @@ const dataCardLink= [
     <Row xs={1} md={2} className="g-4">
       {cardsData.map((item) => (
         <Col key={item.id}>
-          <Card className={`h-100 text-center p-3 shadow-sm ${item.bg}`}>
-            <Card.Body>
+          <Card className="text-center">
+            <Card.Body className={`${item.bg}`}>
               <Card.Title className='titulo_metrica'> {item.icon} {item.title}</Card.Title>
               <h2 className='text_metricas'>{item.value}</h2>
               <Card.Text className='text_metricas'>

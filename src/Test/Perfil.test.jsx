@@ -6,8 +6,6 @@ import { MemoryRouter, Routes, Route } from "react-router-dom";
 import Perfil from "../Admin/Perfil/perfil";
 import CambiarPsswd from "../Admin/Perfil/cambiarPsswd";
 
-// vi.hoisted permite usar la variable dentro de vi.mock (que se ejecuta primero).
-// Solo se simula useNavigate; Link, Routes, useParams, etc. siguen siendo los reales.
 const navigateMock = vi.hoisted(() => vi.fn());
 
 vi.mock("react-router-dom", async () => {
@@ -15,26 +13,21 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => navigateMock };
 });
 
-// Respuesta simulada de fetch
 const responder = (data) =>
   Promise.resolve({ json: () => Promise.resolve(data) });
 
-// Preparación común antes de cada test
 beforeEach(() => {
   navigateMock.mockClear();
   localStorage.clear();
 });
 
-// Limpieza común después de cada test
 afterEach(() => {
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
 
-/* ==========================================================================
-   1. Vista Perfil (perfil.jsx) - función cargarPerfil
-   ========================================================================== */
-describe("Vista Perfil - función cargarPerfil", () => {
+/*Vista Perfil (perfil.jsx) - funcion cargarPerfil*/
+describe("Vista Perfil - funcion cargarPerfil", () => {
   const usuarioMock = {
     id: 3,
     nombre: "Ana",
@@ -60,7 +53,6 @@ describe("Vista Perfil - función cargarPerfil", () => {
 
     renderizar();
 
-    // Espera a que aparezcan los datos traídos del backend
     expect(await screen.findByText("Ana")).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith("/api/usuarios/3");
     expect(screen.getByText("Pérez")).toBeInTheDocument();
@@ -70,7 +62,6 @@ describe("Vista Perfil - función cargarPerfil", () => {
     expect(screen.getByText("metropolitana")).toBeInTheDocument();
     expect(screen.getByText("Santiago")).toBeInTheDocument();
 
-    // Los botones apuntan a las rutas del usuario cargado
     expect(screen.getByRole("link", { name: "Editar Perfil" })).toHaveAttribute(
       "href",
       "/editarUsuario/3"
@@ -110,9 +101,7 @@ describe("Vista Perfil - función cargarPerfil", () => {
   });
 });
 
-/* ==========================================================================
-   2. Vista CambiarPsswd (cambiarPsswd.jsx) - handleChange y handleCambiarClave
-   ========================================================================== */
+/*Vista CambiarPsswd (cambiarPsswd.jsx) - handleChange y handleCambiarClave */
 describe("Vista CambiarPsswd - handleChange y handleCambiarClave", () => {
   const renderizar = () =>
     render(
@@ -187,7 +176,6 @@ describe("Vista CambiarPsswd - handleChange y handleCambiarClave", () => {
       contrasenaNueva: "nueva1234",
     });
 
-    // La redirección ocurre después de 1,5 segundos (setTimeout de la vista)
     expect(navigateMock).not.toHaveBeenCalled();
     await waitFor(
       () => {
@@ -229,7 +217,7 @@ describe("Vista CambiarPsswd - handleChange y handleCambiarClave", () => {
     expect(navigateMock).not.toHaveBeenCalled();
   });
 
-  it("no envía nada si el formulario está incompleto", async () => {
+  it("no envia nada si el formulario esta incompleto", async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();

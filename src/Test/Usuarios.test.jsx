@@ -9,8 +9,6 @@ import EditarUsuario from "../Admin/Usuarios/editarUsuario";
 import Login from "../Tienda/Login/login";
 import Registro from "../Tienda/Login/registro";
 
-// vi.hoisted permite usar la variable dentro de vi.mock (que se ejecuta primero).
-// Solo se simula useNavigate; Link, Routes, useParams, etc. siguen siendo los reales.
 const navigateMock = vi.hoisted(() => vi.fn());
 
 vi.mock("react-router-dom", async () => {
@@ -18,27 +16,22 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => navigateMock };
 });
 
-// Respuesta simulada de fetch (comparte la forma de todas las vistas)
 const responder = (data, ok = true) =>
   Promise.resolve({ ok, json: () => Promise.resolve(data) });
 
-// Preparación común antes de cada test
 beforeEach(() => {
   navigateMock.mockClear();
   localStorage.clear();
   vi.spyOn(window, "alert").mockImplementation(() => {});
 });
 
-// Limpieza común después de cada test
 afterEach(() => {
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
 
-/* ==========================================================================
-   1. Vista Usuarios (usuarios.jsx) - función eliminarUsuario
-   ========================================================================== */
-describe("Vista Usuarios - función eliminarUsuario", () => {
+/*Vista Usuarios (usuarios.jsx) - funcion eliminarUsuario*/
+describe("Vista Usuarios - funcion eliminarUsuario", () => {
   const usuariosMock = [
     {
       id: 1,
@@ -64,7 +57,6 @@ describe("Vista Usuarios - función eliminarUsuario", () => {
     },
   ];
 
-  // GET devuelve la lista; DELETE devuelve la respuesta indicada
   const crearFetch = (respuestaDelete = { ok: true }) =>
     vi.fn((url, options) => {
       if (options?.method === "DELETE") return responder(respuestaDelete);
@@ -86,7 +78,6 @@ describe("Vista Usuarios - función eliminarUsuario", () => {
     renderizar();
     expect(await screen.findByText("Ana")).toBeInTheDocument();
 
-    // Se abre el modal para el primer usuario (Ana)
     await user.click(screen.getAllByRole("button", { name: "Eliminar" })[0]);
     await user.click(screen.getByRole("button", { name: "Aceptar" }));
 
@@ -96,7 +87,6 @@ describe("Vista Usuarios - función eliminarUsuario", () => {
       });
       expect(screen.queryByText("Ana")).not.toBeInTheDocument();
     });
-    // El otro usuario sigue en la tabla
     expect(screen.getByText("Luis")).toBeInTheDocument();
   });
 
@@ -111,7 +101,6 @@ describe("Vista Usuarios - función eliminarUsuario", () => {
     await user.click(screen.getAllByRole("button", { name: "Eliminar" })[0]);
     await user.click(screen.getByRole("button", { name: "Cancelar" }));
 
-    // Solo se hizo el GET inicial, ningún DELETE
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(screen.getByText("Ana")).toBeInTheDocument();
   });
@@ -136,11 +125,8 @@ describe("Vista Usuarios - función eliminarUsuario", () => {
   });
 });
 
-/* ==========================================================================
-   2. Vista HistorialCompra (historialCompra.jsx) - cálculo de cantidadProductos
-   ========================================================================== */
-describe("Vista HistorialCompra - cálculo de cantidad de productos", () => {
-  // Responde según la URL que pide la vista
+/*Vista HistorialCompra (historialCompra.jsx) - calculo de cantidadProductos*/
+describe("Vista HistorialCompra - calculo de cantidad de productos", () => {
   const crearFetch = (respuestaCompras) =>
     vi.fn((url) => {
       if (url === "/api/usuarios/5") {
@@ -195,7 +181,7 @@ describe("Vista HistorialCompra - cálculo de cantidad de productos", () => {
     expect(await screen.findByText("1 producto")).toBeInTheDocument();
   });
 
-  it("muestra el mensaje de sin compras cuando la lista está vacía", async () => {
+  it("muestra el mensaje de sin compras cuando la lista está vacia", async () => {
     vi.stubGlobal("fetch", crearFetch({ ok: true, compras: [] }));
 
     renderizar();
@@ -216,9 +202,7 @@ describe("Vista HistorialCompra - cálculo de cantidad de productos", () => {
   });
 });
 
-/* ==========================================================================
-   3. Vista EditarUsuario (editarUsuario.jsx) - handleChange y handleSubmit
-   ========================================================================== */
+/*Vista EditarUsuario (editarUsuario.jsx) - handleChange y handleSubmit*/
 describe("Vista EditarUsuario - handleChange y handleSubmit", () => {
   const usuarioMock = {
     id: 7,
@@ -232,7 +216,6 @@ describe("Vista EditarUsuario - handleChange y handleSubmit", () => {
     comuna: "Santiago",
   };
 
-  // GET devuelve el usuario; PUT devuelve la respuesta indicada
   const crearFetch = (respuestaPut = { ok: true }) =>
     vi.fn((url, options) => {
       if (options?.method === "PUT") return responder(respuestaPut);
@@ -261,7 +244,7 @@ describe("Vista EditarUsuario - handleChange y handleSubmit", () => {
     expect(screen.getByDisplayValue("Carla")).toBeInTheDocument();
   });
 
-  it("handleSubmit: envía el PUT con los datos editados y vuelve a /usuarios", async () => {
+  it("handleSubmit: envia el PUT con los datos editados y vuelve a /usuarios", async () => {
     const fetchMock = crearFetch({ ok: true });
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
@@ -297,9 +280,7 @@ describe("Vista EditarUsuario - handleChange y handleSubmit", () => {
   });
 });
 
-/* ==========================================================================
-   4. Vista Login (login.jsx) - función handleSubmit
-   ========================================================================== */
+/*Vista Login (login.jsx) - función handleSubmit*/
 describe("Vista Login - función handleSubmit", () => {
   const crearFetch = (ok, body) => vi.fn(() => responder(body, ok));
 
@@ -310,7 +291,7 @@ describe("Vista Login - función handleSubmit", () => {
     await user.click(screen.getByRole("button", { name: "Iniciar Sesion" }));
   };
 
-  it("muestra error si hay campos vacíos y no llama al backend", async () => {
+  it("muestra error si hay campos vacios y no llama al backend", async () => {
     const fetchMock = crearFetch(true, {});
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
@@ -324,7 +305,7 @@ describe("Vista Login - función handleSubmit", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("redirige a /dashboard y guarda la sesión si el usuario es admin", async () => {
+  it("redirige a /dashboard y guarda la sesion si el usuario es admin", async () => {
     const usuario = { correo: "admin@duoc.cl", rol: "admin" };
     vi.stubGlobal("fetch", crearFetch(true, { ok: true, usuario }));
     const user = userEvent.setup();
@@ -351,7 +332,7 @@ describe("Vista Login - función handleSubmit", () => {
     });
   });
 
-  it("muestra el error del servidor si las credenciales son inválidas", async () => {
+  it("muestra el error del servidor si las credenciales son invvlidas", async () => {
     vi.stubGlobal(
       "fetch",
       crearFetch(false, { ok: false, error: "Credenciales invalidas" })
@@ -367,12 +348,9 @@ describe("Vista Login - función handleSubmit", () => {
   });
 });
 
-/* ==========================================================================
-   5. Vista Registro (registro.jsx) - función registro (envío del formulario)
-   ========================================================================== */
-describe("Vista Registro - función registro (envío del formulario)", () => {
+/*Vista Registro (registro.jsx) - funcion registro (envio del formulario)*/
+describe("Vista Registro - funcion registro (envio del formulario)", () => {
   beforeEach(() => {
-    // La vista hace console.log de los datos; se silencia para no ensuciar la salida
     vi.spyOn(console, "log").mockImplementation(() => {});
   });
 
@@ -393,7 +371,7 @@ describe("Vista Registro - función registro (envío del formulario)", () => {
     await user.type(screen.getByPlaceholderText("Comuna"), "Santiago");
   };
 
-  it("envía los datos del formulario por POST y redirige a /login", async () => {
+  it("envia los datos del formulario por POST y redirige a /login", async () => {
     const fetchMock = crearFetch(true, { message: "Usuario registrado" });
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
@@ -434,7 +412,7 @@ describe("Vista Registro - función registro (envío del formulario)", () => {
     expect(navigateMock).not.toHaveBeenCalled();
   });
 
-  it("no envía nada si el formulario está incompleto", async () => {
+  it("no envia nada si el formulario esta incompleto", async () => {
     const fetchMock = crearFetch(true, {});
     vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();

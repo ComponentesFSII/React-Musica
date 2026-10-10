@@ -30,6 +30,23 @@ init_compras= """
 db.execute(init_compras)
 db.commit()
 
+init_detalle_compras = """
+  CREATE TABLE IF NOT EXISTS detalle_compras(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    compra_id INTEGER NOT NULL,
+    producto_id INTEGER,
+    nombre_producto TEXT NOT NULL,
+    cantidad INTEGER NOT NULL,
+    precio REAL NOT NULL,
+    FOREIGN KEY (compra_id) REFERENCES compras (id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos (id_producto) ON DELETE SET NULL
+  )
+"""
+
+db.execute(init_compras)
+db.execute(init_detalle_compras)
+db.commit()
+
 #registrar compra
 @app.post('/api/compras')
 def registrarCompra():
@@ -45,27 +62,49 @@ def registrarCompra():
     comuna = body.get('comuna')
     indicacion = body.get('indicacion')
     total = body.get('total')
+    productos = body.get('productos', [])
 
     #valida que todos los campos esten completos
     if not correo or not nombre or not apellido or not telefono or not calle or not region or not comuna or total is None:
         return jsonify({'ok': False, 'error': 'Faltan campos obligatorios para el envio'}), 400
-
+    if not productos or len(productos) == 0:
+        return jsonify({'ok': False, 'error': 'El carrito esta vacio'}), 400
+    
     usuario = db.execute('SELECT id FROM usuarios WHERE correo = ?', (correo,)).fetchone()
     usuario_id = usuario['id'] if usuario else None
 
-    cursor = db.execute(
-        '''INSERT INTO compras
-           (usuario_id, correo, nombre, apellido, telefono, calle, depo, region, comuna, indicacion, total)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-        (usuario_id, correo, nombre, apellido, telefono, calle, depo, region, comuna, indicacion, total)
-    )
-    db.commit()
+    try:
+        cursor = db.execute(
+            '''INSERT INTO compras
+               (usuario_id, correo, nombre, apellido, telefono, calle, depo, region, comuna, indicacion, total)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+            (usuario_id, correo, nombre, apellido, telefono, calle, depo, region, comuna, indicacion, total)
+        )
+        compra_id = cursor.lastrowid
 
-    return jsonify({
-        'ok': True,
-        'mensaje': 'Compra registrada exitosamente',
-        'compra_id': cursor.lastrowid
-    }), 201
+        for item in productos:
+            producto_id = item.get('id')          
+            nombre_prod = item.get('nombre')     
+            cantidad = item.get('cantidad', 1)    
+            precio = item.get('precio', 0)       
+
+            db.execute(
+                '''INSERT INTO detalle_compras (compra_id, producto_id, nombre_producto, cantidad, precio)
+                   VALUES (?, ?, ?, ?, ?)''',
+                (compra_id, producto_id, nombre_prod, cantidad, precio)
+            )
+
+        db.commit()
+
+        return jsonify({
+            'ok': True,
+            'mensaje': 'Compra registrada exitosamente',
+            'compra_id': compra_id
+        }), 201
+
+    except Exception as e:
+        db.rollback()
+        return jsonify({'ok': False, 'error': str(e)}), 500
 
 
 #obtener las compras registadas
@@ -89,5 +128,7 @@ def obtenerCompraPorID(id):
     row = db.execute('SELECT * FROM compras WHERE id = ?', (id,)).fetchone()
     if not row:
         return jsonify({'ok': False, 'error': 'Compra no encontrada'}), 404
-    
-    return jsonify({'ok': True, 'compra': dict(row)})
+    compra = dict(row)
+    detalles = db.execute('SELECT * FROM detalle_compras WHERE compra_id = ?', (id,)).fetchall()
+    compra['productos'] = [dict(d) for d in detalles]
+    return jsonify({'ok': True, 'compra': compra})

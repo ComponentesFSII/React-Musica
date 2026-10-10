@@ -1,6 +1,6 @@
 .metrica_productos{
     background: #657052 !important;
-    border: 1px solid var(--coffee) !important;
+    border: 1px solid #382604 !important;
     transition: border-color 0.2s ease;
 }
 .metrica_usuarios{

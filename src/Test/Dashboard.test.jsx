@@ -3,7 +3,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Dashboard from "../Admin/Dashboard/dashboard";
 
-// Simula la respuesta del endpoint /api/usuarios/count
 const crearFetch = (body) =>
   vi.fn(() => Promise.resolve({ json: () => Promise.resolve(body) }));
 
@@ -14,6 +13,7 @@ const renderizar = () =>
     </MemoryRouter>
   );
 
+//tarjetas
 describe("Vista Dashboard - carga del total de usuarios y tarjetas", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
@@ -30,7 +30,7 @@ describe("Vista Dashboard - carga del total de usuarios y tarjetas", () => {
     expect(fetchMock).toHaveBeenCalledWith("/api/usuarios/count");
   });
 
-  it("muestra las dos tarjetas de métricas con sus títulos", async () => {
+  it("muestra las dos tarjetas de metricas con sus titulos", async () => {
     vi.stubGlobal("fetch", crearFetch({ ok: true, total: 5 }));
 
     renderizar();
@@ -38,23 +38,21 @@ describe("Vista Dashboard - carga del total de usuarios y tarjetas", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Dashboard");
     expect(screen.getByText("Total Productos")).toBeInTheDocument();
     expect(screen.getByText("Total Usuarios")).toBeInTheDocument();
-    // Espera a que termine la carga para no dejar actualizaciones pendientes
     expect(await screen.findByText("5")).toBeInTheDocument();
   });
 
-  it("mantiene ambas métricas en 0 si el backend responde ok: false", async () => {
+  it("mantiene ambas metricas en 0 si el backend responde ok: false", async () => {
     const json = vi.fn(() => Promise.resolve({ ok: false }));
     vi.stubGlobal("fetch", vi.fn(() => Promise.resolve({ json })));
 
     renderizar();
 
-    // Espera a que la vista haya leído la respuesta del backend
     await waitFor(() => expect(json).toHaveBeenCalled());
     expect(screen.getAllByText("0")).toHaveLength(2);
   });
 
-  it("registra el error y mantiene las métricas en 0 si falla la conexión", async () => {
-    const error = new Error("sin conexión");
+  it("registra el error y mantiene las metricas en 0 si falla la conexión", async () => {
+    const error = new Error("sin conexion");
     vi.spyOn(console, "error").mockImplementation(() => {});
     vi.stubGlobal("fetch", vi.fn(() => Promise.reject(error)));
 

@@ -33,10 +33,10 @@ function NavigationBar() {
             <BsPersonCircle size={21}/>
           </Link>
 
-          <button className="cart-button" type="button">
+          <Link to="/carrito" className="cart-button">
             <BsCart2 size={19}/>
             <span>Carrito</span>
-          </button>
+          </Link>
         </div>
 
       </nav>

@@ -172,3 +172,10 @@
     background: var(--brick) !important;
     color: var(--cream) !important;
 }
+
+.accordion, 
+.accordion-item, 
+.accordion-header, 
+.accordion-button {
+  width: 100% !important;
+}
