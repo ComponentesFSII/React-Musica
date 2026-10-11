@@ -4,6 +4,7 @@ import './registroProductos.css';
 export default function ProductosAdmin() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [editando, setEditando] = useState(false);
   const [form, setForm] = useState({
     codigo: '',
     nombre: '',
@@ -33,11 +34,35 @@ export default function ProductosAdmin() {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
 
+  const prepararEdicion = (prod) => {
+    setEditando(true); // Cambiamos a modo edición
+    setForm({
+      codigo: prod.codigo || '',
+      nombre: prod.nombre || '',
+      precio: prod.precio || '',
+      imagen: prod.imagen_url || '',
+      descripcion: prod.descripcion || '',
+      stock: prod.stock || 0,
+      categoria: prod.categoria_id || prod.categoria_nombre || ''
+    });
+    document.getElementById('cuadro-ingreso-productos').showModal();
+  };
+
+  const abrirParaAgregar = () => {
+    setEditando(false); 
+    setForm({ codigo: '', nombre: '', precio: '', imagen: '', descripcion: '', stock: 0, categoria: '' });
+    document.getElementById('cuadro-ingreso-productos').showModal();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const url = editando ? `/api/productos/${form.codigo}` : '/api/productos';
+    const metodo = editando ? 'PUT' : 'POST';
+
     try {
       const response = await fetch('/api/productos', {
-        method: 'POST',
+        method: metodo,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -47,7 +72,8 @@ export default function ProductosAdmin() {
           precio: parseFloat(form.precio),
           imagen: form.imagen,
           descripcion: form.descripcion,
-          stock: parseInt(form.stock) || 0
+          stock: parseInt(form.stock) || 0,
+          categoria_id: form.categoria
         }),
       });
 
@@ -65,6 +91,31 @@ export default function ProductosAdmin() {
       }
     } catch (error) {
       console.error('Error en la petición:', error);
+    }
+  };
+
+  const handleEliminar = async(codigo, nombre) => {
+    const confirmar = window.confirm(`¿Estás seguro de que deseas eliminar el producto "${nombre}"?`);
+
+    if(!confirmar)return;
+
+    try {
+      const response = await fetch(`/api/productos/${codigo}`,{
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if(response.ok){
+        alert(data.mensaje || 'Producto eliminado correcamtente');
+        const res = await fetch('/api/productos');
+        const nuevosDatos = await res.json();
+        setProductos(nuevosDatos.productos || []);
+      }else{
+          alert(data.error || 'Error al eliminar el producto');
+      } 
+    } catch (error) {
+      console.error('Hubo un error tratando de eliminar el producto', error)
     }
   };
 
@@ -109,8 +160,8 @@ export default function ProductosAdmin() {
                           'Sin imagen'
                         )}
                       </td>
-                      <td><button className='btn btn-info'>Editar</button></td>
-                      <td><button className='btn btn-danger'>Eliminar</button></td>
+                      <td><button className='btn btn-info' onClick={()=> prepararEdicion(prod)}>Editar</button></td>
+                      <td><button className='btn btn-danger' onClick={()=> handleEliminar(prod.codigo, prod.nombre)}>Eliminar</button></td>
 
                     </tr>
                   ))
@@ -122,11 +173,7 @@ export default function ProductosAdmin() {
               </tbody>
             </table>
 
-            <button 
-              className="btn btn-success" 
-              id="ventana-ingreso-productos"
-              onClick={() => document.getElementById('cuadro-ingreso-productos').showModal()}
-            >
+            <button className="btn btn-success" id="ventana-ingreso-productos" onClick={() => document.getElementById('cuadro-ingreso-productos').showModal()}>
               Agregar producto
             </button>
 
@@ -156,20 +203,13 @@ export default function ProductosAdmin() {
                 <input type="text" id="imagen" value={form.imagen} onChange={handleChange} />
 
                 <div style={{ marginTop: '50px' }}>
-                  <button type="submit" className="btn btn-info">Agregar</button>
-                  <button 
-                    type="button" 
-                    className="btn btn-danger" 
-                    id="btn-cerrar-cuadro"
-                    onClick={() => document.getElementById('cuadro-ingreso-productos').close()}
-                  >
+                  <button type="submit" className="btn btn-info">Aceptar</button>
+                  <button type="button" className="btn btn-danger" id="btn-cerrar-cuadro" onClick={() => document.getElementById('cuadro-ingreso-productos').close()}>
                     Cancelar
                   </button>
                 </div>
               </form>
             </dialog>
-
-          
         </div>
       </div>
     </div>
