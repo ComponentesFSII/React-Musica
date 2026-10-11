@@ -42,9 +42,9 @@ export default function CatalogoProductos() {
                   <img src={prod.imagen_url} className="img-fluid" alt={prod.nombre} style={{ maxHeight: '100%', objectFit: 'contain' }}/>
                 </div>
                 <div className="card-body d-flex flex-column justify-content-between p-2">
-                  <h6 className="card-title text-dark">{prod.nombre}</h6>
+                  <h6 className="card-title text-bright">{prod.nombre}</h6>
                   <div className="d-flex justify-content-between align-items-center mt-3">
-                    <span className="text-muted small">Stock: {prod.stock}</span>
+                    <span className="text-bright small">Stock: {prod.stock}</span>
                     <span className="fw-bold text-primary">
                       ${prod.precio ? prod.precio.toLocaleString('es-CL') : 0}
                     </span>

@@ -61,6 +61,19 @@ def obtenerProductosByCodigo(codigo):
         'producto': dict(row)
     }), 200
 
+@app.get('/api/productos/categorias/<id_categoria>')
+def obtenerProductosByCategoria(id_categoria):
+    query = "SELECT * FROM productos WHERE categoria_id = ?"
+    rows = db.execute(query, (id_categoria,)).fetchall()
+    
+    if not rows:
+        return jsonify({'ok': False, 'mensaje': f"No se han encontrado productos para {id_categoria}"}), 404
+        
+    return jsonify({
+        'ok': True,
+        'productos': [dict(row) for row in rows]
+    }), 200
+
 
 @app.post('/api/productos')
 def registrarProducto():

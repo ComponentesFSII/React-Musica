@@ -27,10 +27,16 @@ function Home() {
     cargarProductos()
   }, []);
 
-  const categorias = Array.from(
-    new Set(productos.map(p => p.categoria_nombre).filter(Boolean))
-  )
-  const categoriasPorDefecto = ['grunge','alternative','rock', 'indie','glam','soul']
+  const categoriasunicas = Array.from(
+  new Map(
+    productos
+      .filter(p => p.categoria_nombre) // Asegura que al menos tenga nombre
+      .map(p => {
+        const idReal = p.categoria_id || p.id_categoria || p.categoria_nombre;
+        return [idReal, { id: idReal, nombre: p.categoria_nombre }];
+      })
+  ).values()
+)
 
   return (
     <main className="offbeat-home">
@@ -158,16 +164,11 @@ function Home() {
         </div>
 
         <div className="genre-grid">
-          {categorias.map((nombreCategoria, index) => {
-            const claseCss = categoriasPorDefecto[index % categoriasPorDefecto.length]
+          {categoriasunicas.map((cat, index) => {
             const numeroFormateado = String(index + 1).padStart(2, '0')
 
             return (
-              <Link
-                to='/categorias'
-                className={`genre-card ${claseCss}`}
-                key={nombreCategoria}
-              >
+              <Link to={`/categorias/${cat.id}`} className="genre-card" key={cat.id || `cat-${index}`}>
                 <span className="genre-number">
                   {numeroFormateado} / OFFBEAT
                 </span>
@@ -175,7 +176,7 @@ function Home() {
                 <BsDisc className="genre-disc" />
 
                 <div className="genre-bottom">
-                  <h3>{nombreCategoria}</h3>
+                  <h3>{cat.nombre}</h3>
                   <BsArrowUpRight size={25} />
                 </div>
               </Link>

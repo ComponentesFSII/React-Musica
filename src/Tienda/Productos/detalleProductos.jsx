@@ -72,7 +72,7 @@ export default function DetalleProductos() {
           />
         </div>
 
-        <div className="card-precios col-md-6 d-flex flex-column justify-content-center">
+        <div className="card-precios">
           <div className="card-precios-detalles mb-3">
             <p className="mb-1">
               Precio neto: $<span id="precioProducto">{formatearPrecio(precioNeto)}</span>
